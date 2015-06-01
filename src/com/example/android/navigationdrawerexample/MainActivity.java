@@ -69,6 +69,7 @@ import android.widget.Toast;
  * An action should be an operation performed on the current contents of the window,
  * for example enabling or disabling a data overlay on top of the current content.</p>
  */
+@SuppressWarnings("deprecation")
 public class MainActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -83,10 +84,10 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        isProfessor =  true;//this.getIntent().getBundleExtra("professor").equals(true);
+        //isProfessor =  true;//this.getIntent().getBundleExtra("professor").equals(true);
 
         mTitle = mDrawerTitle = getTitle();
-        mPlanetTitles = getResources().getStringArray(isProfessor? R.array.menu_professor:R.array.menu_aluno);
+        mPlanetTitles = getMyTitles();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -103,29 +104,22 @@ public class MainActivity extends Activity {
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the sliding drawer and the action bar app icon
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                R.drawable.ic_drawer,  /* nav drawer image to replace 'Up' caret */
-                R.string.drawer_open,  /* "open drawer" description for accessibility */
-                R.string.drawer_close  /* "close drawer" description for accessibility */
-                ) {
-            public void onDrawerClosed(View view) {
-                getActionBar().setTitle(mTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                getActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
+        mDrawerToggle = new ActionBarDrawerToggleExtension(this, mDrawerLayout, R.drawable.ic_drawer,
+				R.string.drawer_open, R.string.drawer_close  /* "close drawer" description for accessibility */);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
             selectItem(0);
         }
     }
+
+	private String[] getMyTitles() {
+		String[] myTitles = getResources().getStringArray(R.array.menu_lateral);
+		if (isProfessor){
+			myTitles[2] = "texto";
+		}
+		return myTitles;
+	}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -142,8 +136,8 @@ public class MainActivity extends Activity {
         menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
-
-    @Override
+    
+	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
          // The action bar home/up action should open or close the drawer.
          // ActionBarDrawerToggle will take care of this.
@@ -168,7 +162,26 @@ public class MainActivity extends Activity {
         }
     }
 
-    /* The click listner for ListView in the navigation drawer */
+	private final class ActionBarDrawerToggleExtension extends
+			ActionBarDrawerToggle {
+		private ActionBarDrawerToggleExtension(Activity activity,
+				DrawerLayout drawerLayout, int drawerImageRes,
+				int openDrawerContentDescRes, int closeDrawerContentDescRes) {
+			super(activity, drawerLayout, drawerImageRes,
+					openDrawerContentDescRes, closeDrawerContentDescRes);
+		}
+
+		public void onDrawerClosed(View view) {
+		    getActionBar().setTitle(mTitle);
+		    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+		}
+
+		public void onDrawerOpened(View drawerView) {
+		    getActionBar().setTitle(mDrawerTitle);
+		    invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+		}
+	}
+	/* The click listner for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -176,83 +189,50 @@ public class MainActivity extends Activity {
         }
     }
 
-    @SuppressWarnings("deprecation")
 	private void selectItem(int position) {
-    	if (position==2){
-    		// update the main content by replacing fragments
-            Fragment fragment = new AlterarSenhaFragment();
-            Bundle args = new Bundle();
-            args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-            fragment.setArguments(args);
-
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
-            // update selected item and title, then close the drawer
-            mDrawerList.setItemChecked(position, true);
-            setTitle(mPlanetTitles[position]);
-            mDrawerLayout.closeDrawer(mDrawerList);
-	    }else if (position==1){
-	    	final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-	    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	        builder.setMessage("Fazer check-out na aula de MO915?")
-	               .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-	                   public void onClick(DialogInterface dialog, int id) {
-	                       // FIRE ZE MISSILES!
-		               		alertDialog.setMessage("Aula de MO915 finalizada!\n93% dos ticks, presença confirmada!");
-		               		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-	               			public void onClick(DialogInterface dialog, int which) {
-	               				// here you can add functions
-	               			}
-	               		});
-	               		//alertDialog.setIcon(R.drawable.icon);
-	               		alertDialog.show();
-	                   }
-	               })
-	               .setNegativeButton("Não", new DialogInterface.OnClickListener() {
-	                   public void onClick(DialogInterface dialog, int id) {
-	                       // User cancelled the dialog
-	                	   alertDialog.setTitle("Falha de rede");
-		               		alertDialog.setMessage("Não foi possivel enviar a sua localização\nPor favor verifique a conexão");
-		               		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-	               			public void onClick(DialogInterface dialog, int which) {
-	               				// here you can add functions
-	               			}
-	               		});
-	               		//alertDialog.setIcon(R.drawable.icon);
-	               		alertDialog.show();
-	                   }
-	               });
-	    	
-	        builder.show();
-            
-	    }else if (position==1){
-			AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-			alertDialog.setMessage("Login efetuado automaticamente em MO915");
-			alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int which) {
-					// here you can add functions
-				}
-			});
-			//alertDialog.setIcon(R.drawable.icon);
-			alertDialog.show();
-            
-	    }else{
-	        // update the main content by replacing fragments
-	        Fragment fragment = new PlanetFragment();
-	        Bundle args = new Bundle();
-	        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
-	        fragment.setArguments(args);
-	
-	        FragmentManager fragmentManager = getFragmentManager();
-	        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-	
-	        // update selected item and title, then close the drawer
-	        mDrawerList.setItemChecked(position, true);
-	        setTitle(mPlanetTitles[position]);
-	        mDrawerLayout.closeDrawer(mDrawerList);
-    	}
+		switch (position) {
+			case 1:
+				doLogout();
+				break;
+			case 2:
+				callNewFragment(position, new AlterarSenhaFragment());
+				break;
+			case 3:
+				doLogout();
+				break;
+			default:
+				callNewFragment(position, new PlanetFragment());
+			}
     }
+
+	private void doLogout() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Tem certeza que desaja sair").setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		        	   
+		           }
+		       })
+		       .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		        	   //Do nothing
+		           }
+		       });
+		
+		builder.show();
+	}
+
+	private void callNewFragment(int position, Fragment fragment) {
+		// update the main content by replacing fragments
+		Bundle args = new Bundle();
+		args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
+		fragment.setArguments(args);
+		FragmentManager fragmentManager = getFragmentManager();
+		fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+		// update selected item and title, then close the drawer
+		mDrawerList.setItemChecked(position, true);
+		setTitle(mPlanetTitles[position]);
+		mDrawerLayout.closeDrawer(mDrawerList);
+	}
 
     @Override
     public void setTitle(CharSequence title) {
@@ -265,14 +245,14 @@ public class MainActivity extends Activity {
      * onPostCreate() and onConfigurationChanged()...
      */
 
-    @Override
+	@Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
 
-    @Override
+	@Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
@@ -286,6 +266,7 @@ public class MainActivity extends Activity {
         public static final String ARG_PLANET_NUMBER = "planet_number";
 
         public PlanetFragment() {
+        	//TBM desenha a figurinha no titulo
             // Empty constructor required for fragment subclasses
         }
 
@@ -294,7 +275,7 @@ public class MainActivity extends Activity {
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
             int i = getArguments().getInt(ARG_PLANET_NUMBER);
-            String planet = getResources().getStringArray(R.array.menu_aluno)[i];
+            String planet = getResources().getStringArray(R.array.menu_lateral)[i];
 
             int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()),
                             "drawable", getActivity().getPackageName());
@@ -319,4 +300,11 @@ public class MainActivity extends Activity {
             return rootView;
         }
     }
+    
+    private void showPopUpMessage(String message) {
+		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+		alertDialog.setMessage(message);
+		//alertDialog.setIcon(R.drawable.icon);
+		alertDialog.show();
+	}
 }

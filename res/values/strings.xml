@@ -21,17 +21,10 @@
 
     
     
-    <string-array name="menu_professor">
+    <string-array name="menu_lateral">
         <item>Disciplinas</item>
         <item>Check-out</item>
         <item>Alterar senha</item>
-        <item>Sair</item>
-    </string-array>
-    
-    <string-array name="menu_aluno">
-        <item>Disciplinas</item>
-        <item>Checkin</item>
-        <item>Alterar Senha</item>
         <item>Sair</item>
     </string-array>
 

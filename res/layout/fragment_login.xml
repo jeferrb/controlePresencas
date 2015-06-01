@@ -15,7 +15,7 @@
         android:orientation="vertical" >
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/textLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Login"
@@ -25,7 +25,7 @@
         </EditText>
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/textSenha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Senha"
@@ -39,12 +39,13 @@
             android:onClick="login"
             android:text="Entrar" />
         
-        <Button android:id="@+id/Button01"
+        <Button
+            android:id="@+id/ButtonRecuperarSenha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:onClick="recuperaSenha"
-            android:text="Recuperar Senha"/>
+            android:text="Recuperar Senha" />
 
     </LinearLayout>
 

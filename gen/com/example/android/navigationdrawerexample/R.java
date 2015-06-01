@@ -9,8 +9,7 @@ package com.example.android.navigationdrawerexample;
 
 public final class R {
     public static final class array {
-        public static final int menu_aluno=0x7f060001;
-        public static final int menu_professor=0x7f060000;
+        public static final int menu_lateral=0x7f060000;
     }
     public static final class attr {
     }
@@ -40,7 +39,7 @@ public final class R {
         public static final int venus=0x7f02000b;
     }
     public static final class id {
-        public static final int Button01=0x7f08000c;
+        public static final int ButtonRecuperarSenha=0x7f08000c;
         public static final int EditText01=0x7f080006;
         public static final int EditText02=0x7f080005;
         public static final int action_settings=0x7f08000e;
@@ -49,13 +48,13 @@ public final class R {
         public static final int container=0x7f080000;
         public static final int content_frame=0x7f080003;
         public static final int drawer_layout=0x7f080002;
-        public static final int editText1=0x7f08000b;
-        public static final int editText2=0x7f080007;
         public static final int image=0x7f08000d;
         public static final int left_drawer=0x7f080004;
         public static final int linearLayout1=0x7f08000a;
         public static final int pager=0x7f080001;
         public static final int section_label=0x7f080009;
+        public static final int textLogin=0x7f08000b;
+        public static final int textSenha=0x7f080007;
     }
     public static final class layout {
         public static final int activity_alterar_senha=0x7f030000;
