@@ -1,10 +1,9 @@
 package com.example.android.navigationdrawerexample;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.app.AlertDialog;
 
 public class LoginActivity extends Activity{
 
@@ -65,32 +63,29 @@ public class LoginActivity extends Activity{
 	public void login(View view){
 		EditText login   = (EditText)findViewById(R.id.textLogin);
 		String stringL =login.getText().toString();
-	 
 	    if( stringL != null && stringL.length()>0) {
-				
-	    	String urlString = "";
+			
+	    	RestClient obj = new RestClient();
+	    	//String json = "{ 'username': 'aluno1@dac.unicamp.br', 'password': 'aluno1' }";
+	    	String json = "login/usuario/Joao/senha/12345";
+	    	String[] request = {"get", json};
+	    	obj.execute(request);
 	    	
 			//new CallAPI().execute(urlString);
 			
 			Intent intent = new Intent(view.getContext(), MainActivity.class);
 			intent.putExtra("professor", false);
 			startActivity(intent);
-	 
 	    }
 		
 	}
-	@SuppressWarnings("deprecation")
 	public void recuperaSenha(View view){
+		showPopUpMessage("Por favor verifique a conexão e tente novamente");
+	}
+	private void showPopUpMessage(String message) {
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-		alertDialog.setTitle("Falha de rede");
-		alertDialog.setMessage("Por favor verifique a conexão e tente novamente");
-		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int which) {
-				// here you can add functions
-			}
-		});
+		alertDialog.setMessage(message);
 		//alertDialog.setIcon(R.drawable.icon);
 		alertDialog.show();
-		
 	}
 }
