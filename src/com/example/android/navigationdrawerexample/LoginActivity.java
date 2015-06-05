@@ -1,10 +1,13 @@
 package com.example.android.navigationdrawerexample;
 
+import java.util.concurrent.ExecutionException;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 public class LoginActivity extends Activity{
-
+	private static String TAG = "LoginActivity";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,21 +64,31 @@ public class LoginActivity extends Activity{
 	}
 	
 	public void login(View view){
-		EditText login   = (EditText)findViewById(R.id.textLogin);
-		String stringL =login.getText().toString();
-	    if( stringL != null && stringL.length()>0) {
-			
+		Boolean debug = true;
+		EditText login = (EditText)findViewById(R.id.textLogin);
+		String loginS =login.getText().toString();
+		EditText senha = (EditText)findViewById(R.id.textSenha);
+		String senhaS = senha.getText().toString();
+	    if(debug||(loginS != null && loginS.length()>0 && senhaS != null && senhaS.length()>0)) {
 	    	RestClient obj = new RestClient();
-	    	//String json = "{ 'username': 'aluno1@dac.unicamp.br', 'password': 'aluno1' }";
-	    	String json = "login/usuario/Joao/senha/12345";
-	    	String[] request = {"get", json};
-	    	obj.execute(request);
+	    	String pathLogin = "login/usuario/"+loginS+"/senha/"+senhaS;
+	    	pathLogin = "login/usuario/Joao/senha/12345";
+	    	String[] request = {"get", pathLogin};
+	    	try {
+				String retorno = obj.execute(request).get();
+			} catch (InterruptedException e) {
+				Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
+				showPopUpMessage("ERROR: " + e.toString() + "\nMSG: " + e.getMessage()+"\nPor favor tenete novamente mais tarde");
+			} catch (ExecutionException e) {
+				Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
+				showPopUpMessage("ERROR: " + e.toString() + "\nMSG: " + e.getMessage()+"\nPor favor tenete novamente mais tarde");
+			}
 	    	
-			//new CallAPI().execute(urlString);
-			
 			Intent intent = new Intent(view.getContext(), MainActivity.class);
 			intent.putExtra("professor", false);
 			startActivity(intent);
+	    }else {
+	    	showPopUpMessage("Login e Senha são campos obligatórios");
 	    }
 		
 	}

@@ -1,4 +1,5 @@
 package com.example.android.navigationdrawerexample;
+/*Based on http://stackoverflow.com/questions/15813910/android-resteasy-mobile-sample-client */
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,13 +15,14 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class RestClient extends AsyncTask<String, String, Boolean> {
+public class RestClient extends AsyncTask<String, String, String> {
 
     private static String TAG = "RestClient";
-    private  String jaxrsmessage = null;
+    private  String messageReceived = null;
 
     private static String DIRECCION_GET  = "http://179.184.165.195/projeto/api/";
     private static String DIRECCION_POST = "http://179.184.165.195/projeto/api/";
@@ -29,20 +31,18 @@ public class RestClient extends AsyncTask<String, String, Boolean> {
     }
 
     @Override
-    protected Boolean doInBackground(String... params) {
-
+    protected String doInBackground(String... params) {
         HttpClient httpclient = new DefaultHttpClient();
         try {
             if(params[0].equals("get")){
             	Log.d(TAG, "GET");
             	HttpGet request = new HttpGet(DIRECCION_GET+params[1]);
-                request.addHeader("Content-Type", "application/json");
-                request.addHeader("Accept", "application/json");
                 HttpResponse response = httpclient.execute(request);
                 HttpEntity entity = response.getEntity();
                 InputStream instream = entity.getContent();
-                jaxrsmessage = read(instream);
-                Log.e(TAG, jaxrsmessage);
+                messageReceived = read(instream);
+                //Log.d(TAG, messageReceived);
+                return(messageReceived);
             } else if(params[0].equals("post")){
             	Log.d(TAG, "POST");
             	HttpPost post = new HttpPost(DIRECCION_POST);
@@ -53,7 +53,6 @@ public class RestClient extends AsyncTask<String, String, Boolean> {
                 String retSrc = EntityUtils.toString(httpResponse.getEntity());
                 Log.d(TAG, retSrc);
 			}
-
         } catch (ClientProtocolException e) {
             Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
         } catch (IOException e) {
@@ -65,11 +64,10 @@ public class RestClient extends AsyncTask<String, String, Boolean> {
         }finally {
             httpclient.getConnectionManager().shutdown();
         }
-        return true;
+        return "true";
     }
-
     @Override
-    protected void onPostExecute(Boolean result) {
+    protected void onPostExecute(String result) {
 
     }
 
@@ -88,7 +86,5 @@ public class RestClient extends AsyncTask<String, String, Boolean> {
             Log.e(TAG, "Se ha producido un error: " + e.toString() + "\nMensaje: " + e.getMessage());
         }
         return sb.toString();
-
     }
-
 }
