@@ -1,6 +1,5 @@
 package com.example.android.navigationdrawerexample;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
@@ -10,29 +9,43 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.jdom2.Document;
 import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
 import org.xml.sax.InputSource;
 
 import android.util.Log;
-import android.util.Xml;
 
 public class XmlManager {
 	static String TAG = "XmlManager";
 	
-	public static Xml manageXml(String rawXml){
+	public static byte manageXmlLogin(String rawXml){
+		/*
+		 * return:
+		 * 	0 in case of fail
+		 * 	1 in case of professor
+		 * 	2 in case of studant
+		*/
+		
+		/*	imput exemple:
+		 * <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+		 *	<LoginUsuario>
+		 * 		<sucess>true</sucess>
+		 * 		<tipo>Aluno</tipo>
+		 * 	</LoginUsuario> 
+		*/
+		
 		try {
 			Document document = (Document) loadXMLFromString(rawXml);
 			org.jdom2.Element rootNode = document.getRootElement();
 			List<org.jdom2.Element> list = rootNode.getChildren("staff");
 			for (int i = 0; i < list.size(); i++) {
 				org.jdom2.Element node = (org.jdom2.Element) list.get(i);
-				System.out.println("First Name : "
-						+ node.getChildText("firstname"));
-				System.out.println("Last Name : "
-						+ node.getChildText("lastname"));
-				System.out.println("Nick Name : "
-						+ node.getChildText("nickname"));
-				System.out.println("Salary : " + node.getChildText("salary"));
+				if (node.getChildText("sucess").equals("true")){
+					if (node.getChildText("tipo").equals("Aluno")){
+						return 2;
+					}
+					if (node.getChildText("tipo").equals("Professor")){
+						return 1;
+					}
+				}
 			}
 		} catch (IOException io) {
 			Log.e(TAG, "ERROR: " + io.toString() + "\nMSG: " + io.getMessage());
@@ -40,9 +53,8 @@ public class XmlManager {
 			Log.e(TAG, "ERROR: " + jdomex.toString() + "\nMSG: " + jdomex.getMessage());
 		} catch (Exception e) {
 			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
-			e.printStackTrace();
 		}
-		return null;
+		return 0;
     }
 	
 	public static org.w3c.dom.Document loadXMLFromString(String xml) throws Exception
@@ -52,5 +64,6 @@ public class XmlManager {
 	    InputSource is = new InputSource(new StringReader(xml));
 	    return builder.parse(is);
 	}
+	
 	
 }

@@ -281,7 +281,6 @@ public class MainActivity extends Activity {
     private void showPopUpMessage(String message) {
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 		alertDialog.setMessage(message);
-		//alertDialog.setIcon(R.drawable.icon);
 		alertDialog.show();
 	}
 }

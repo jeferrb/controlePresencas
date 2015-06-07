@@ -1,5 +1,6 @@
 package com.example.android.navigationdrawerexample;
 /*Based on http://stackoverflow.com/questions/15813910/android-resteasy-mobile-sample-client */
+/*I'll try to insert a loading bar like that: http://stackoverflow.com/questions/15585749/progressdialog-spinning-circle*/
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,20 +17,19 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
 public class RestClient extends AsyncTask<String, String, String> {
-
-    private static String TAG = "RestClient";
+	private static String TAG = "RestClient";
     private  String messageReceived = null;
 
     private static String DIRECCION_GET  = "http://179.184.165.195/projeto/api/";
     private static String DIRECCION_POST = "http://179.184.165.195/projeto/api/";
 
-    public RestClient(){
+    public RestClient(Activity activity){
     }
-
     @Override
     protected String doInBackground(String... params) {
         HttpClient httpclient = new DefaultHttpClient();
@@ -41,7 +41,7 @@ public class RestClient extends AsyncTask<String, String, String> {
                 HttpEntity entity = response.getEntity();
                 InputStream instream = entity.getContent();
                 messageReceived = read(instream);
-                //Log.d(TAG, messageReceived);
+                Log.d(TAG, messageReceived);
                 return(messageReceived);
             } else if(params[0].equals("post")){
             	Log.d(TAG, "POST");
@@ -68,7 +68,6 @@ public class RestClient extends AsyncTask<String, String, String> {
     }
     @Override
     protected void onPostExecute(String result) {
-
     }
 
     private static String read(InputStream instream) {
