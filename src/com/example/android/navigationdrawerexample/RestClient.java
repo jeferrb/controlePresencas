@@ -17,18 +17,30 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
 public class RestClient extends AsyncTask<String, String, String> {
 	private static String TAG = "RestClient";
     private  String messageReceived = null;
+    //private ProgressDialog MyDialog;
+    //private ProgressDialog dialog;
+    //private LoginActivity activity;
 
     private static String DIRECCION_GET  = "http://179.184.165.195/projeto/api/";
     private static String DIRECCION_POST = "http://179.184.165.195/projeto/api/";
 
-    public RestClient(Activity activity){
+    public RestClient(LoginActivity activity){
+    	//this.activity = activity;
+    	//dialog = new ProgressDialog(activity);
+    	//MyDialog = ProgressDialog.show(activity, " " , " Loading. Please wait ... ", true);
+    }
+    @Override
+    protected  void onPreExecute(){
+		//MyDialog.show();
+		//this.dialog.setMessage("Please wait");
+        //this.dialog.show();
+    	//activity.showProgressDialog();
     }
     @Override
     protected String doInBackground(String... params) {
@@ -68,6 +80,9 @@ public class RestClient extends AsyncTask<String, String, String> {
     }
     @Override
     protected void onPostExecute(String result) {
+    	//MyDialog.dismiss();
+        //dialog.dismiss();
+        
     }
 
     private static String read(InputStream instream) {

@@ -50,17 +50,18 @@ public class MainActivity extends Activity {
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    private String[] mPlanetTitles;
-    boolean isProfessor;
+    private String[] mTitles;
+    byte type; // 1 in case of professor; 2 in case of student
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //isProfessor =  true;//this.getIntent().getBundleExtra("professor").equals(true);
+        //isProfessor =  true;
+        type= this.getIntent().getByteExtra("type",(byte) 0);
 
         mTitle = mDrawerTitle = getTitle();
-        mPlanetTitles = getMyTitles();
+        mTitles = getMyTitles();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -68,7 +69,7 @@ public class MainActivity extends Activity {
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mPlanetTitles));
+                R.layout.drawer_list_item, mTitles));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
@@ -88,8 +89,8 @@ public class MainActivity extends Activity {
 
 	private String[] getMyTitles() {
 		String[] myTitles = getResources().getStringArray(R.array.menu_lateral);
-		if (isProfessor){
-			myTitles[2] = "texto";
+		if (type == 1){//professor (exception)
+			myTitles[2] = "Iniciar Aula";
 		}
 		return myTitles;
 	}
@@ -185,7 +186,7 @@ public class MainActivity extends Activity {
 		builder.setMessage("Tem certeza que desaja sair").setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 		           @Override
 				public void onClick(DialogInterface dialog, int id) {
-		        	   
+		        	   finish();
 		           }
 		       })
 		       .setNegativeButton("Não", new DialogInterface.OnClickListener() {
@@ -207,7 +208,7 @@ public class MainActivity extends Activity {
 		fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
-		setTitle(mPlanetTitles[position]);
+		setTitle(mTitles[position]);
 		mDrawerLayout.closeDrawer(mDrawerList);
 	}
 
@@ -283,4 +284,7 @@ public class MainActivity extends Activity {
 		alertDialog.setMessage(message);
 		alertDialog.show();
 	}
+    private void showToastMessage(String message){
+    	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
 }

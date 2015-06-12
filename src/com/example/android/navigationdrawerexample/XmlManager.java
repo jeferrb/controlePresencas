@@ -1,69 +1,134 @@
 package com.example.android.navigationdrawerexample;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.List;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.jdom2.Document;
-import org.jdom2.JDOMException;
-import org.xml.sax.InputSource;
-
-import android.util.Log;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 public class XmlManager {
 	static String TAG = "XmlManager";
-	
+	//static String test = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<LoginUsuario>\n<sucess>true</sucess>\n<tipo>Aluno</tipo>\n</LoginUsuario>";
+
 	public static byte manageXmlLogin(String rawXml){
+		//rawXml = test;
 		/*
 		 * return:
 		 * 	0 in case of fail
 		 * 	1 in case of professor
-		 * 	2 in case of studant
+		 * 	2 in case of student
+		 * 	3 in case of Login or Password incorrect
 		*/
 		
-		/*	imput exemple:
+		/*	input example:
 		 * <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 		 *	<LoginUsuario>
 		 * 		<sucess>true</sucess>
 		 * 		<tipo>Aluno</tipo>
 		 * 	</LoginUsuario> 
 		*/
-		
-		try {
-			Document document = (Document) loadXMLFromString(rawXml);
-			org.jdom2.Element rootNode = document.getRootElement();
-			List<org.jdom2.Element> list = rootNode.getChildren("staff");
-			for (int i = 0; i < list.size(); i++) {
-				org.jdom2.Element node = (org.jdom2.Element) list.get(i);
-				if (node.getChildText("sucess").equals("true")){
-					if (node.getChildText("tipo").equals("Aluno")){
-						return 2;
-					}
-					if (node.getChildText("tipo").equals("Professor")){
-						return 1;
-					}
-				}
-			}
-		} catch (IOException io) {
-			Log.e(TAG, "ERROR: " + io.toString() + "\nMSG: " + io.getMessage());
-		} catch (JDOMException jdomex) {
-			Log.e(TAG, "ERROR: " + jdomex.toString() + "\nMSG: " + jdomex.getMessage());
-		} catch (Exception e) {
-			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
-		}
+		XmlPullParserFactory xmlFactoryObject;
+        int event;
+        String text=null;
+        try {
+    		InputStream stream = new ByteArrayInputStream(rawXml.getBytes("UTF-8"));
+            xmlFactoryObject = XmlPullParserFactory.newInstance();
+            XmlPullParser myParser = xmlFactoryObject.newPullParser();
+            
+            myParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            myParser.setInput(stream, null);
+           event = myParser.getEventType();
+           while (event != XmlPullParser.END_DOCUMENT) {
+              String name=myParser.getName();
+              switch (event){
+                 case XmlPullParser.START_TAG:
+                 break;
+                 case XmlPullParser.TEXT:
+                 text = myParser.getText();
+                 break;
+                 case XmlPullParser.END_TAG:
+                	 if (name.equals("sucess")){
+                		 if(!text.equals("true")){
+                			 return 3; 
+                		 }
+                	 }
+                	 if (name.equals("tipo")){
+                		 if(!text.equals("Aluno")){
+                			 return 2; 
+                		 }
+                		 if(!text.equals("Professor")){
+                			 return 1; 
+                		 }
+                	 }
+                 break;
+              }
+              event = myParser.next();
+           }
+        }
+        catch (Exception e) {
+           e.printStackTrace();
+        }
 		return 0;
     }
 	
-	public static org.w3c.dom.Document loadXMLFromString(String xml) throws Exception
-	{
-	    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-	    DocumentBuilder builder = factory.newDocumentBuilder();
-	    InputSource is = new InputSource(new StringReader(xml));
-	    return builder.parse(is);
-	}
-	
-	
+	public static String[][] manageXmlTurmas(String rawXml){
+		/*
+		 * return a array of classes
+		 * with each [i] corresponding a each discipline
+		 * an j: 0 = idTurma; 1 = discipline name; 2 = opened or not
+		 * 
+		*/
+		
+		/* input example:
+		*	<turmaLogins>
+		*		<LoginTurma>
+		*			<chamadaAberta>false</chamadaAberta>
+		*			<idTurma>1</idTurma>
+		*			<nomeDisciplina>Engenharia de software</nomeDisciplina>
+		*		</LoginTurma>
+		*	</turmaLogins>
+		*/
+		XmlPullParserFactory xmlFactoryObject;
+        int event;
+        String text=null;
+        try {
+    		InputStream stream = new ByteArrayInputStream(rawXml.getBytes("UTF-8"));
+            xmlFactoryObject = XmlPullParserFactory.newInstance();
+            XmlPullParser myParser = xmlFactoryObject.newPullParser();
+            
+            myParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            myParser.setInput(stream, null);
+           event = myParser.getEventType();
+           while (event != XmlPullParser.END_DOCUMENT) {
+              String name=myParser.getName();
+              switch (event){
+                 case XmlPullParser.START_TAG:
+                 break;
+                 case XmlPullParser.TEXT:
+                 text = myParser.getText();
+                 break;
+                 case XmlPullParser.END_TAG:
+                	 if (name.equals("sucess")){
+                		 if(!text.equals("true")){
+                			 return null; 
+                		 }
+                	 }
+                	 if (name.equals("tipo")){
+                		 if(!text.equals("Aluno")){
+                			 return null; 
+                		 }
+                		 if(!text.equals("Professor")){
+                			 return null; 
+                		 }
+                	 }
+                 break;
+              }
+              event = myParser.next();
+           }
+        }
+        catch (Exception e) {
+           e.printStackTrace();
+        }
+		return null;
+    }
 }
