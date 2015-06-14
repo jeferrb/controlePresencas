@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.navigationdrawerexample;
+package com.unicamp.br.mo409.view;
 
 import java.util.Locale;
 
@@ -42,8 +42,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.android.navigationdrawerexample.R;
+
 @SuppressWarnings("deprecation")
 public class MainActivity extends Activity {
+
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -51,7 +54,10 @@ public class MainActivity extends Activity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mTitles;
-    byte type; // 1 in case of professor; 2 in case of student
+    byte type; //  3 in case of student; 4 in case of professor
+	private final byte student = 3;
+	private final byte professor = 4;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +95,7 @@ public class MainActivity extends Activity {
 
 	private String[] getMyTitles() {
 		String[] myTitles = getResources().getStringArray(R.array.menu_lateral);
-		if (type == 1){//professor (exception)
+		if (type == professor){//professor (exception)
 			myTitles[2] = "Iniciar Aula";
 		}
 		return myTitles;
@@ -136,13 +142,10 @@ public class MainActivity extends Activity {
         }
     }
 
-	private final class ActionBarDrawerToggleExtension extends
-			ActionBarDrawerToggle {
-		private ActionBarDrawerToggleExtension(Activity activity,
-				DrawerLayout drawerLayout, int drawerImageRes,
+	private final class ActionBarDrawerToggleExtension extends ActionBarDrawerToggle {
+		private ActionBarDrawerToggleExtension(Activity activity, DrawerLayout drawerLayout, int drawerImageRes,
 				int openDrawerContentDescRes, int closeDrawerContentDescRes) {
-			super(activity, drawerLayout, drawerImageRes,
-					openDrawerContentDescRes, closeDrawerContentDescRes);
+			super(activity, drawerLayout, drawerImageRes, openDrawerContentDescRes, closeDrawerContentDescRes);
 		}
 
 		@Override
@@ -168,7 +171,8 @@ public class MainActivity extends Activity {
 	private void selectItem(int position) {
 		switch (position) {
 			case 1:
-				doLogout();
+				//TODO
+				showToastMessage("Ainda não implementado");
 				break;
 			case 2:
 				callNewFragment(position, new AlterarSenhaFragment());
@@ -188,14 +192,12 @@ public class MainActivity extends Activity {
 				public void onClick(DialogInterface dialog, int id) {
 		        	   finish();
 		           }
-		       })
-		       .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+		       }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
 		           @Override
 				public void onClick(DialogInterface dialog, int id) {
 		        	   //Do nothing
 		           }
 		       });
-		
 		builder.show();
 	}
 

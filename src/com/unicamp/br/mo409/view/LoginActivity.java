@@ -1,11 +1,8 @@
-package com.example.android.navigationdrawerexample;
-
-import java.util.concurrent.ExecutionException;
+package com.unicamp.br.mo409.view;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.android.navigationdrawerexample.R;
+import com.unicamp.br.mo409.model.Usuario;
 
 public class LoginActivity extends Activity{
 	private static String TAG = "LoginActivity";
@@ -70,43 +70,30 @@ public class LoginActivity extends Activity{
 		String loginS =login.getText().toString();
 		EditText senha = (EditText)findViewById(R.id.textSenha);
 		String senhaS = senha.getText().toString();
-		String retorno = null;
 		
 		if(!(loginS != null && loginS.length()>0 && senhaS != null && senhaS.length()>0)) {
 			showPopUpMessage("Login e Senha são campos obligatórios");
 			return;
 		}
-		
-    	RestClient obj = new RestClient(this);
-    	String pathLogin = "login/usuario/"+loginS+"/senha/"+senhaS;
-    	String[] request = {"get", pathLogin};
-    	
-    	try {
-			retorno = obj.execute(request).get();
-		} catch (InterruptedException e) {
-			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
-			showPopUpMessage("ERROR: " + e.toString() + "\nMSG: " + e.getMessage()+"\nPor favor tenete novamente mais tarde");
-		} catch (ExecutionException e) {
-			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
-			showPopUpMessage("ERROR: " + e.toString() + "\nMSG: " + e.getMessage()+"\nPor favor tenete novamente mais tarde");
-		}
-    	
-    	byte resultado = XmlManager.manageXmlLogin(retorno);
-    	Intent intent = new Intent(view.getContext(), MainActivity.class);
+
+    	byte resultado = Usuario.TentarLogar(loginS, senhaS);
+
     	switch (resultado) {
-		case 2:
-			intent.putExtra("type", 2); //student
-			startActivity(intent);
-			break;
-		case 1:
-			intent.putExtra("type", 1); //professor
-			startActivity(intent);
-			break;
-		case 3:
-			showPopUpMessage("Login ou Senha inválidos");
-			break;
 		case 0:
 			showToastMessage("Ocorreu um erro desconhecido, por favor tente novamente");
+			break;
+		case 1:
+			showPopUpMessage("Login ou Senha inválidos");
+			break;
+		case 3:
+			Intent intentAluno = new Intent(view.getContext(), MainActivity.class);
+			intentAluno.putExtra("type", 3); //student
+			startActivity(intentAluno);
+			break;
+		case 4:
+			Intent intentProfessor = new Intent(view.getContext(), MainActivity.class);
+			intentProfessor.putExtra("type", 4); //professor
+			startActivity(intentProfessor);
 			break;
 		default:
 			Log.e(TAG, "ERROR: Invalid value \nMSG: Invalid value from XmlManager.manageXmlLogin(retorno);");
@@ -116,7 +103,7 @@ public class LoginActivity extends Activity{
 		
 	}
 	public void recuperaSenha(View view){
-		//showPopUpMessage("Por favor verifique a conexão e tente novamente");
+		
 	}
 	
 	private void showPopUpMessage(String message) {

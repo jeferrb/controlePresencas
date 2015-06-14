@@ -1,4 +1,4 @@
-package com.example.android.navigationdrawerexample;
+package com.unicamp.br.mo409.controller;
 /*Based on http://stackoverflow.com/questions/15813910/android-resteasy-mobile-sample-client */
 /*I'll try to insert a loading bar like that: http://stackoverflow.com/questions/15585749/progressdialog-spinning-circle*/
 
@@ -23,24 +23,11 @@ import android.util.Log;
 public class RestClient extends AsyncTask<String, String, String> {
 	private static String TAG = "RestClient";
     private  String messageReceived = null;
-    //private ProgressDialog MyDialog;
-    //private ProgressDialog dialog;
-    //private LoginActivity activity;
 
     private static String DIRECCION_GET  = "http://179.184.165.195/projeto/api/";
     private static String DIRECCION_POST = "http://179.184.165.195/projeto/api/";
 
-    public RestClient(LoginActivity activity){
-    	//this.activity = activity;
-    	//dialog = new ProgressDialog(activity);
-    	//MyDialog = ProgressDialog.show(activity, " " , " Loading. Please wait ... ", true);
-    }
-    @Override
-    protected  void onPreExecute(){
-		//MyDialog.show();
-		//this.dialog.setMessage("Please wait");
-        //this.dialog.show();
-    	//activity.showProgressDialog();
+    public RestClient(){
     }
     @Override
     protected String doInBackground(String... params) {
@@ -80,9 +67,6 @@ public class RestClient extends AsyncTask<String, String, String> {
     }
     @Override
     protected void onPostExecute(String result) {
-    	//MyDialog.dismiss();
-        //dialog.dismiss();
-        
     }
 
     private static String read(InputStream instream) {

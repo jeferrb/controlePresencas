@@ -1,18 +1,20 @@
-package com.example.android.navigationdrawerexample;
+package com.unicamp.br.mo409.view;
 
 import java.util.Locale;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.android.navigationdrawerexample.R;
 
 public class DisciplinasActivity extends Activity {
 

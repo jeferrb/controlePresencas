@@ -1,4 +1,4 @@
-package com.example.android.navigationdrawerexample;
+package com.unicamp.br.mo409.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -15,9 +15,10 @@ public class XmlManager {
 		/*
 		 * return:
 		 * 	0 in case of fail
-		 * 	1 in case of professor
-		 * 	2 in case of student
-		 * 	3 in case of Login or Password incorrect
+		 * 	1 in case of Login or Password incorrect
+		 * 	2 reserved
+		 * 	3 in case of student
+		 * 	4 in case of professor
 		*/
 		
 		/*	input example:
@@ -49,15 +50,15 @@ public class XmlManager {
                  case XmlPullParser.END_TAG:
                 	 if (name.equals("sucess")){
                 		 if(!text.equals("true")){
-                			 return 3; 
+                			 return 1; 
                 		 }
                 	 }
                 	 if (name.equals("tipo")){
                 		 if(!text.equals("Aluno")){
-                			 return 2; 
+                			 return 3; 
                 		 }
                 		 if(!text.equals("Professor")){
-                			 return 1; 
+                			 return 4; 
                 		 }
                 	 }
                  break;
