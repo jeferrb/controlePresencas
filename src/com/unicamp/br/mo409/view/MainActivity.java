@@ -125,21 +125,7 @@ public class MainActivity extends Activity {
             return true;
         }
         // Handle action buttons
-        switch(item.getItemId()) {
-        case R.id.action_websearch:
-            // create intent to perform web search for this planet
-            Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-            intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-            // catch event that there's no activity to handle intent
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            } else {
-                Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
-            }
-            return true;
-        default:
             return super.onOptionsItemSelected(item);
-        }
     }
 
 	private final class ActionBarDrawerToggleExtension extends ActionBarDrawerToggle {
@@ -170,6 +156,10 @@ public class MainActivity extends Activity {
 
 	private void selectItem(int position) {
 		switch (position) {
+			case 0:
+				//TODO
+				showToastMessage("Ainda não implementado");
+				break;
 			case 1:
 				//TODO
 				showToastMessage("Ainda não implementado");
@@ -180,14 +170,12 @@ public class MainActivity extends Activity {
 			case 3:
 				doLogout();
 				break;
-			default:
-				callNewFragment(position, new PlanetFragment());
 			}
     }
 
 	private void doLogout() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Tem certeza que desaja sair").setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+		builder.setMessage("Tem certeza que desaja sair?").setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 		           @Override
 				public void onClick(DialogInterface dialog, int id) {
 		        	   finish();
@@ -204,7 +192,6 @@ public class MainActivity extends Activity {
 	private void callNewFragment(int position, Fragment fragment) {
 		// update the main content by replacing fragments
 		Bundle args = new Bundle();
-		args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
 		fragment.setArguments(args);
 		FragmentManager fragmentManager = getFragmentManager();
 		fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
@@ -239,34 +226,27 @@ public class MainActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    /**
-     * Fragment that appears in the "content_frame", shows a planet
-     */
-    public static class PlanetFragment extends Fragment {
-        public static final String ARG_PLANET_NUMBER = "planet_number";
-
-        public PlanetFragment() {
-        	//TBM desenha a figurinha no titulo
-            // Empty constructor required for fragment subclasses
-        }
+    
+     //Fragment that appears in the "content_frame"
+     
+    public static class MyFragment extends Fragment {
+        public static final String ARG_MENU_NUMBER = "planet_number";
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
-            int i = getArguments().getInt(ARG_PLANET_NUMBER);
-            String planet = getResources().getStringArray(R.array.menu_lateral)[i];
+            View rootView = inflater.inflate(R.layout.fragment_disciplinas, container, false);
+            int i = getArguments().getInt(ARG_MENU_NUMBER);
+            String itemDoMennu = getResources().getStringArray(R.array.menu_lateral)[i];
 
-            int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()),
+            int imageId = getResources().getIdentifier(itemDoMennu.toLowerCase(Locale.getDefault()),
                             "drawable", getActivity().getPackageName());
             ((ImageView) rootView.findViewById(R.id.image)).setImageResource(imageId);
-            getActivity().setTitle(planet);
+            getActivity().setTitle(itemDoMennu);
             return rootView;
         }
     }
     public static class AlterarSenhaFragment extends Fragment {
-        public static final String ARG_PLANET_NUMBER = "planet_number";
-
         public AlterarSenhaFragment() {
             // Empty constructor required for fragment subclasses
         }

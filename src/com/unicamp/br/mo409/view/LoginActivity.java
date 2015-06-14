@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,10 +14,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.android.navigationdrawerexample.R;
-import com.unicamp.br.mo409.model.Usuario;
+import com.unicamp.br.mo409.controller.ControllerLogin;
 
 public class LoginActivity extends Activity{
-	private static String TAG = "LoginActivity";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,57 +65,38 @@ public class LoginActivity extends Activity{
 	
 	public void login(View view){
 		EditText login = (EditText)findViewById(R.id.textLogin);
-		String loginS =login.getText().toString();
 		EditText senha = (EditText)findViewById(R.id.textSenha);
-		String senhaS = senha.getText().toString();
-		
-		if(!(loginS != null && loginS.length()>0 && senhaS != null && senhaS.length()>0)) {
-			showPopUpMessage("Login e Senha são campos obligatórios");
-			return;
-		}
-
-    	byte resultado = Usuario.TentarLogar(loginS, senhaS);
-
-    	switch (resultado) {
-		case 0:
-			showToastMessage("Ocorreu um erro desconhecido, por favor tente novamente");
-			break;
-		case 1:
-			showPopUpMessage("Login ou Senha inválidos");
-			break;
-		case 3:
-			Intent intentAluno = new Intent(view.getContext(), MainActivity.class);
-			intentAluno.putExtra("type", 3); //student
-			startActivity(intentAluno);
-			break;
-		case 4:
-			Intent intentProfessor = new Intent(view.getContext(), MainActivity.class);
-			intentProfessor.putExtra("type", 4); //professor
-			startActivity(intentProfessor);
-			break;
-		default:
-			Log.e(TAG, "ERROR: Invalid value \nMSG: Invalid value from XmlManager.manageXmlLogin(retorno);");
-			showPopUpMessage("Ocerreu um erro inesperado, por favor tente novamente");
-			break;
-		}
-		
+		ControllerLogin.tentarLogar(this, view, login.getText().toString(), senha.getText().toString());
 	}
 	public void recuperaSenha(View view){
 		
 	}
-	
-	private void showPopUpMessage(String message) {
+	public void debugProf(View view){
+		callNewIntent(view, 4);//professor
+		
+	}
+
+	public void debugAlun(View view){
+		callNewIntent(view, 3);//student
+		
+	}
+
+	public void showPopUpMessage(String message) {
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 		alertDialog.setMessage(message);
 		alertDialog.show();
 		
 	}
-	public void showProgressDialog(){
-		//TODO
-	}
 	
-	private void showToastMessage(String message){
+	public void showToastMessage(String message){
     	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
+	
+	public void callNewIntent(View view, int type) {
+		Intent intentAluno = new Intent(view.getContext(), MainActivity.class);
+		intentAluno.putExtra("type", type);
+		startActivity(intentAluno);
+		finish();
+	}
 
 }

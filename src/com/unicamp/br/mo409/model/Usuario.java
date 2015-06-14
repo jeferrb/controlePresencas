@@ -9,9 +9,9 @@ import android.util.Log;
 
 public class Usuario {
 	static private String TAG = "Model.Usuario";
-	private long tokenLogado = 0;
+	private int tokenLogado = 0;
 
-	public static byte TentarLogar(String login, String password) {
+	public int tentarLogar(String login, String password) {
 		//return success, fail or the type of the user.
 		RestClient obj = new RestClient();
 		String pathLogin = "login/usuario/" + login + "/senha/" + password;
@@ -24,15 +24,16 @@ public class Usuario {
 		} catch (ExecutionException e) {
 			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
 		}
-
-		return XmlManager.manageXmlLogin(retorno);
+		int[] ret = XmlManager.manageXmlLogin(retorno);
+		tokenLogado = ret[1];
+		return  ret[0];
 	}
 
 	public long getTokenLogado() {
 		return tokenLogado;
 	}
 
-	public void setTokenLogado(long tokenLogado) {
+	public void setTokenLogado(int tokenLogado) {
 		this.tokenLogado = tokenLogado;
 	}
 

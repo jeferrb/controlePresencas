@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.8" icons="true" automaticImage="JPEG" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" language="java" name="com.unicamp.br.mo409.view.AlterarSenhaActivity" project="MainActivity" 
+    file="/MainActivity/src/com/unicamp/br/mo409/view/AlterarSenhaActivity.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="133" width="230" x="1016" y="-128"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="com.unicamp.br.mo409.view.DisciplinasActivity.SectionsPagerAdapter" 
+    project="MainActivity" file="/MainActivity/src/com/unicamp/br/mo409/view/DisciplinasActivity.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="133" width="230" x="2170" y="387"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="com.unicamp.br.mo409.model.Usuario" project="MainActivity" 
+    file="/MainActivity/src/com/unicamp/br/mo409/model/Usuario.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="169" width="163" x="1978" y="-128"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="com.unicamp.br.mo409.view.DisciplinasActivity" project="MainActivity" 
+    file="/MainActivity/src/com/unicamp/br/mo409/view/DisciplinasActivity.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="151" width="230" x="2181" y="-128"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="com.unicamp.br.mo409.view.LoginActivity" project="MainActivity" 
+    file="/MainActivity/src/com/unicamp/br/mo409/view/LoginActivity.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="259" width="230" x="2773" y="-128"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="com.unicamp.br.mo409.view.MainActivity" project="MainActivity" 
+    file="/MainActivity/src/com/unicamp/br/mo409/view/MainActivity.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="475" width="240" x="3632" y="-128"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="com.unicamp.br.mo409.view.MainActivity.AlterarSenhaFragment" 
+    project="MainActivity" file="/MainActivity/src/com/unicamp/br/mo409/view/MainActivity.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="97" width="293" x="3106" y="387"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="com.unicamp.br.mo409.controller.RestClient" project="MainActivity" 
+    file="/MainActivity/src/com/unicamp/br/mo409/controller/RestClient.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="205" width="177" x="328" y="-128"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="com.unicamp.br.mo409.controller.XmlManager" project="MainActivity" 
+    file="/MainActivity/src/com/unicamp/br/mo409/controller/XmlManager.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="133" width="196" x="545" y="-128"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="com.unicamp.br.mo409.model.Professor" project="MainActivity" 
+    file="/MainActivity/src/com/unicamp/br/mo409/model/Professor.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="97" width="147" x="1791" y="387"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="com.unicamp.br.mo409.view.MainActivity.ActionBarDrawerToggleExtension" 
+    project="MainActivity" file="/MainActivity/src/com/unicamp/br/mo409/view/MainActivity.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="115" width="347" x="3439" y="387"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="com.unicamp.br.mo409.model.Aluno" project="MainActivity" 
+    file="/MainActivity/src/com/unicamp/br/mo409/model/Aluno.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="97" width="152" x="1978" y="387"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="com.unicamp.br.mo409.view.MainActivity.MyFragment" project="MainActivity" 
+    file="/MainActivity/src/com/unicamp/br/mo409/view/MainActivity.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="115" width="293" x="3826" y="387"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="com.unicamp.br.mo409.view.LoginActivity.PlaceholderFragment" 
+    project="MainActivity" file="/MainActivity/src/com/unicamp/br/mo409/view/LoginActivity.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="97" width="293" x="2773" y="387"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="com.unicamp.br.mo409.view.DisciplinasActivity.PlaceholderFragment" 
+    project="MainActivity" file="/MainActivity/src/com/unicamp/br/mo409/view/DisciplinasActivity.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="133" width="293" x="2440" y="387"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="com.unicamp.br.mo409.controller.ControllerMain" project="MainActivity" 
+    file="/MainActivity/src/com/unicamp/br/mo409/controller/ControllerMain.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="79" width="148" x="1512" y="-128"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="com.unicamp.br.mo409.view.MainActivity.DrawerItemClickListener" 
+    project="MainActivity" file="/MainActivity/src/com/unicamp/br/mo409/view/MainActivity.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="97" width="258" x="4159" y="387"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="com.unicamp.br.mo409.controller.ControllerLogin" project="MainActivity" 
+    file="/MainActivity/src/com/unicamp/br/mo409/controller/ControllerLogin.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="115" width="238" x="1700" y="-128"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="com.unicamp.br.mo409.view.AlterarSenhaActivity.PlaceholderFragment" 
+    project="MainActivity" file="/MainActivity/src/com/unicamp/br/mo409/view/AlterarSenhaActivity.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1131" y="169"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <nesting id="20">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="2"/>  
+  </nesting>  
+  <nesting id="21">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="15"/>  
+  </nesting>  
+  <generalization id="22">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <nesting id="23">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="13"/>  
+  </nesting>  
+  <nesting id="24">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="17"/>  
+  </nesting>  
+  <association id="25">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="26" name="mSectionsPagerAdapter"/>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="28">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <nesting id="29">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="7"/>  
+  </nesting>  
+  <nesting id="30">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="19"/>  
+  </nesting>  
+  <nesting id="31">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="14"/>  
+  </nesting>  
+  <nesting id="32">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="11"/>  
+  </nesting>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

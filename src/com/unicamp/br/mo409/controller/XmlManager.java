@@ -10,7 +10,7 @@ public class XmlManager {
 	static String TAG = "XmlManager";
 	//static String test = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<LoginUsuario>\n<sucess>true</sucess>\n<tipo>Aluno</tipo>\n</LoginUsuario>";
 
-	public static byte manageXmlLogin(String rawXml){
+	public static int[] manageXmlLogin(String rawXml){
 		//rawXml = test;
 		/*
 		 * return:
@@ -31,6 +31,8 @@ public class XmlManager {
 		XmlPullParserFactory xmlFactoryObject;
         int event;
         String text=null;
+        int[] retorno = new int[2];
+        retorno [0] = 0;
         try {
     		InputStream stream = new ByteArrayInputStream(rawXml.getBytes("UTF-8"));
             xmlFactoryObject = XmlPullParserFactory.newInstance();
@@ -50,16 +52,20 @@ public class XmlManager {
                  case XmlPullParser.END_TAG:
                 	 if (name.equals("sucess")){
                 		 if(!text.equals("true")){
-                			 return 1; 
+                			 retorno [0] = 1; 
+                			 return retorno;
                 		 }
                 	 }
                 	 if (name.equals("tipo")){
                 		 if(!text.equals("Aluno")){
-                			 return 3; 
+                			 retorno [0] = 3; 
                 		 }
                 		 if(!text.equals("Professor")){
-                			 return 4; 
+                			 retorno [0] = 4; 
                 		 }
+                	 }
+                	 if (name.equals("token")){
+                		retorno [1] = Integer.parseInt(text); 
                 	 }
                  break;
               }
@@ -69,7 +75,7 @@ public class XmlManager {
         catch (Exception e) {
            e.printStackTrace();
         }
-		return 0;
+		return retorno;
     }
 	
 	public static String[][] manageXmlTurmas(String rawXml){
