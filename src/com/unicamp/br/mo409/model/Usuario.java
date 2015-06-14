@@ -1,6 +1,7 @@
 package com.unicamp.br.mo409.model;
 
-import com.unicamp.br.mo409.controller.ControllerMain;
+import com.unicamp.br.mo409.controller.MainActivity;
+import com.unicamp.br.mo409.controller.MainActivity.AlterarSenhaFragment;
 
 
 public class Usuario {
@@ -26,7 +27,23 @@ public class Usuario {
 	}
 
 	public void getDisciplinas() {
-		ControllerMain.getDisciplinas(token);
+		MainActivity.getDisciplinas(token);
+	}
+
+	public void checkInOut() {
+		if (isInAula) {
+			//check-out
+			
+		}else{
+			//check-in
+			
+		}
+	}
+
+	public void alterarSenha(int position, MainActivity mainActivity) {
+		// TODO Auto-generated method stub
+		mainActivity.callNewFragment(position, new AlterarSenhaFragment());
+		
 	}
 
 }

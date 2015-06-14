@@ -106,6 +106,7 @@ public class XmlManager {
             myParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             myParser.setInput(stream, null);
            event = myParser.getEventType();
+           //TODO
            while (event != XmlPullParser.END_DOCUMENT) {
               String name=myParser.getName();
               switch (event){

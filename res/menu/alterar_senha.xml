@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.unicamp.br.mo409.view.AlterarSenhaActivity" >
+    tools:context="com.unicamp.br.mo409.controller.AlterarSenhaActivity" >
 
     <item
         android:id="@+id/action_settings"

@@ -1,4 +1,4 @@
-package com.unicamp.br.mo409.view;
+package com.unicamp.br.mo409.controller;
 
 import android.app.Activity;
 import android.app.Fragment;

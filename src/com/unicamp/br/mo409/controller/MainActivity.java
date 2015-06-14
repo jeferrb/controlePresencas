@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.unicamp.br.mo409.view;
+package com.unicamp.br.mo409.controller;
 
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -28,6 +29,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,7 +49,8 @@ import com.unicamp.br.mo409.model.Usuario;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends Activity {
-
+	public final static String TAG = "MainActivity";
+	
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -167,10 +170,10 @@ public class MainActivity extends Activity {
 				user.getDisciplinas();
 				break;
 			case 1: // check-out || check-in
-				showToastMessage("Ainda não implementado");
+				user.checkInOut();
 				break;
 			case 2:
-				callNewFragment(position, new AlterarSenhaFragment());
+				user.alterarSenha(position, this);
 				break;
 			case 3:
 				doLogout();
@@ -194,7 +197,7 @@ public class MainActivity extends Activity {
 		builder.show();
 	}
 
-	private void callNewFragment(int position, Fragment fragment) {
+	public void callNewFragment(int position, Fragment fragment) {
 		// update the main content by replacing fragments
 		Bundle args = new Bundle();
 		fragment.setArguments(args);
@@ -271,7 +274,23 @@ public class MainActivity extends Activity {
 		alertDialog.setMessage(message);
 		alertDialog.show();
 	}*/
-    private void showToastMessage(String message){
+/*    private void showToastMessage(String message){
     	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-    }
+    }*/
+    
+    public static void getDisciplinas(int token) {
+		RestClient obj = new RestClient();
+		//TODO
+		String pathLogin = "getTurma/"+String.valueOf(token);
+		String[] request = { "get", pathLogin };
+		String retorno = null;
+		try {
+			retorno = obj.execute(request).get();
+		} catch (InterruptedException e) {
+			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
+		} catch (ExecutionException e) {
+			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
+		}
+		String[][] ret = XmlManager.manageXmlTurmas(retorno);
+	}
 }

@@ -1,10 +1,13 @@
-package com.unicamp.br.mo409.view;
+package com.unicamp.br.mo409.controller;
+
+import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,14 +17,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.android.navigationdrawerexample.R;
-import com.unicamp.br.mo409.controller.ControllerLogin;
 
 public class LoginActivity extends Activity{
-	private ControllerLogin myControllerLogin;
+	public final String TAG = "LoginActivity";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		myControllerLogin = new ControllerLogin();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		if (savedInstanceState == null) {
@@ -68,7 +69,7 @@ public class LoginActivity extends Activity{
 	public void login(View view){
 		EditText login = (EditText)findViewById(R.id.textLogin);
 		EditText senha = (EditText)findViewById(R.id.textSenha);
-		myControllerLogin.tentarLogar(this, view, login.getText().toString(), senha.getText().toString());
+		tentarLogar(view, login.getText().toString(), senha.getText().toString());
 	}
 	public void recuperaSenha(View view){
 		
@@ -99,6 +100,48 @@ public class LoginActivity extends Activity{
 		intentAluno.putExtra("token", token);
 		startActivity(intentAluno);
 		finish();
+	}
+	
+	public void tentarLogar(View view, String login, String senha){
+		if(!(login != null && login.length()>0 && senha != null && senha.length()>0)) {
+			((LoginActivity) this).showPopUpMessage("Login e Senha são campos obligatórios");
+			return;
+		}
+		
+		//return success, fail or the type of the user.
+		RestClient obj = new RestClient();
+		String pathLogin = "login/usuario/" + login + "/senha/" + senha;
+		String[] request = { "get", pathLogin };
+		String retorno = null;
+		try {
+			retorno = obj.execute(request).get();
+		} catch (InterruptedException e) {
+			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
+		} catch (ExecutionException e) {
+			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
+		}
+		int[] ret = XmlManager.manageXmlLogin(retorno);
+		
+		int resultado = ret[0];
+
+		switch (resultado) {
+		case 0:
+			this.showToastMessage("Ocorreu um erro desconhecido, por favor tente novamente");
+			break;
+		case 1:
+			this.showPopUpMessage("Login ou Senha inválidos");
+			break;
+		case 3:
+			this.callNewIntent(view, 3, ret[1]);//student
+			break;
+		case 4:
+			this.callNewIntent(view, 4, ret[1]); //professor
+			break;
+		default:
+			Log.e(TAG, "ERROR: Invalid value \nMSG: Invalid value from XmlManager.manageXmlLogin(retorno);");
+			this.showPopUpMessage("Ocerreu um erro inesperado, por favor tente novamente");
+			break;
+		}
 	}
 
 }
