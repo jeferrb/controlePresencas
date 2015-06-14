@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<project>
+    <algorithm>1</algorithm>
+    <walkLength>10</walkLength>
+    <generateGraph>true</generateGraph>
+    <verbosity>true</verbosity>
+    <failureVerbosity>true</failureVerbosity>
+    <algorithmName>Greedy Walk</algorithmName>
+    <coverageOption>true</coverageOption>
+    <coverageOption>true</coverageOption>
+    <coverageOption>true</coverageOption>
+    <coverageOption>true</coverageOption>
+    <coverageOption>true</coverageOption>
+    <resetProbability>0.03125</resetProbability>
+    <className>com.unicamp.br.mo409.statemachines.FSMCliente</className>
+    <packageLocation>file:/D:\Academico\UNICAMP\Dropbox\Unicamp-2015.1\MO409a-EngenhariaDeSoftware\2014-06-10-TestesModelJunit\Cliente\maquinaClienteSprint1v1.jar</packageLocation>
+</project>
