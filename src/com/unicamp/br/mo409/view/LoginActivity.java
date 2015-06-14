@@ -17,9 +17,11 @@ import com.example.android.navigationdrawerexample.R;
 import com.unicamp.br.mo409.controller.ControllerLogin;
 
 public class LoginActivity extends Activity{
+	private ControllerLogin myControllerLogin;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		myControllerLogin = new ControllerLogin();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		if (savedInstanceState == null) {
@@ -66,18 +68,18 @@ public class LoginActivity extends Activity{
 	public void login(View view){
 		EditText login = (EditText)findViewById(R.id.textLogin);
 		EditText senha = (EditText)findViewById(R.id.textSenha);
-		ControllerLogin.tentarLogar(this, view, login.getText().toString(), senha.getText().toString());
+		myControllerLogin.tentarLogar(this, view, login.getText().toString(), senha.getText().toString());
 	}
 	public void recuperaSenha(View view){
 		
 	}
 	public void debugProf(View view){
-		callNewIntent(view, 4);//professor
+		callNewIntent(view, 4, 0);//professor
 		
 	}
 
 	public void debugAlun(View view){
-		callNewIntent(view, 3);//student
+		callNewIntent(view, 3, 0);//student
 		
 	}
 
@@ -85,16 +87,16 @@ public class LoginActivity extends Activity{
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 		alertDialog.setMessage(message);
 		alertDialog.show();
-		
 	}
 	
 	public void showToastMessage(String message){
     	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 	
-	public void callNewIntent(View view, int type) {
+	public void callNewIntent(View view, int type, int token) {
 		Intent intentAluno = new Intent(view.getContext(), MainActivity.class);
 		intentAluno.putExtra("type", type);
+		intentAluno.putExtra("token", token);
 		startActivity(intentAluno);
 		finish();
 	}

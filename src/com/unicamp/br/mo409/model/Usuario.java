@@ -1,40 +1,32 @@
 package com.unicamp.br.mo409.model;
 
-import java.util.concurrent.ExecutionException;
+import com.unicamp.br.mo409.controller.ControllerMain;
 
-import com.unicamp.br.mo409.controller.RestClient;
-import com.unicamp.br.mo409.controller.XmlManager;
-
-import android.util.Log;
 
 public class Usuario {
-	static private String TAG = "Model.Usuario";
-	private int tokenLogado = 0;
-
-	public int tentarLogar(String login, String password) {
-		//return success, fail or the type of the user.
-		RestClient obj = new RestClient();
-		String pathLogin = "login/usuario/" + login + "/senha/" + password;
-		String[] request = { "get", pathLogin };
-		String retorno = null;
-		try {
-			retorno = obj.execute(request).get();
-		} catch (InterruptedException e) {
-			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
-		} catch (ExecutionException e) {
-			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
-		}
-		int[] ret = XmlManager.manageXmlLogin(retorno);
-		tokenLogado = ret[1];
-		return  ret[0];
+	private boolean isInAula = false;
+	public int type;
+	private int token = 0;
+	
+	public boolean isInAula() {
+		return isInAula;
 	}
+
+	public void setInAula(boolean isInAula) {
+		this.isInAula = isInAula;
+	}
+
 
 	public long getTokenLogado() {
-		return tokenLogado;
+		return token;
 	}
 
-	public void setTokenLogado(int tokenLogado) {
-		this.tokenLogado = tokenLogado;
+	public void setTokenLogado(int token) {
+		this.token = token;
+	}
+
+	public void getDisciplinas() {
+		ControllerMain.getDisciplinas(token);
 	}
 
 }

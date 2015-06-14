@@ -22,9 +22,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.SearchManager;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -43,6 +41,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.android.navigationdrawerexample.R;
+import com.unicamp.br.mo409.model.Aluno;
+import com.unicamp.br.mo409.model.Professor;
+import com.unicamp.br.mo409.model.Usuario;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends Activity {
@@ -54,19 +55,25 @@ public class MainActivity extends Activity {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mTitles;
-    byte type; //  3 in case of student; 4 in case of professor
-	private final byte student = 3;
-	private final byte professor = 4;
+	private Usuario user;
+	
     
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //isProfessor =  true;
-        type= this.getIntent().getByteExtra("type",(byte) 0);
-
-        mTitle = mDrawerTitle = getTitle();
+        if (3==this.getIntent().getByteExtra("type",(byte) 0)){
+        	//aluno
+        	user = new Aluno(this.getIntent().getIntExtra("type",(byte) 0));
+        	
+        }
+        if (4==this.getIntent().getByteExtra("type",(byte) 0)){
+        	//professor
+        	user = new Professor(this.getIntent().getIntExtra("type",(byte) 0));
+        }
+        //mTitle = mDrawerTitle = getTitle();
+        mTitle = mDrawerTitle = (user.type==3?"Aluno":"Professor")+"Nome do Maluco";
         mTitles = getMyTitles();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -95,7 +102,7 @@ public class MainActivity extends Activity {
 
 	private String[] getMyTitles() {
 		String[] myTitles = getResources().getStringArray(R.array.menu_lateral);
-		if (type == professor){//professor (exception)
+		if (user.type == 4){//professor (exception)
 			myTitles[2] = "Iniciar Aula";
 		}
 		return myTitles;
@@ -156,12 +163,10 @@ public class MainActivity extends Activity {
 
 	private void selectItem(int position) {
 		switch (position) {
-			case 0:
-				//TODO
-				showToastMessage("Ainda não implementado");
+			case 0: // Disciplinas
+				user.getDisciplinas();
 				break;
-			case 1:
-				//TODO
+			case 1: // check-out || check-in
 				showToastMessage("Ainda não implementado");
 				break;
 			case 2:
@@ -261,11 +266,11 @@ public class MainActivity extends Activity {
         }
     }
     
-    private void showPopUpMessage(String message) {
+    /*private void showPopUpMessage(String message) {
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 		alertDialog.setMessage(message);
 		alertDialog.show();
-	}
+	}*/
     private void showToastMessage(String message){
     	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
