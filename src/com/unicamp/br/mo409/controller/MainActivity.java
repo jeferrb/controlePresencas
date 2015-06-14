@@ -16,6 +16,7 @@
 
 package com.unicamp.br.mo409.controller;
 
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
@@ -24,6 +25,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -40,7 +42,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.android.navigationdrawerexample.R;
 import com.unicamp.br.mo409.model.Aluno;
@@ -66,17 +67,17 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (3==this.getIntent().getByteExtra("type",(byte) 0)){
+        String tipo = this.getIntent().getStringExtra("type");
+        if (tipo.equals("Aluno")){
         	//aluno
-        	user = new Aluno(this.getIntent().getIntExtra("type",(byte) 0));
-        	
+        	user = new Aluno(this.getIntent().getIntExtra("token", 0));
         }
-        if (4==this.getIntent().getByteExtra("type",(byte) 0)){
+        if (tipo.equals("Professor")){
         	//professor
-        	user = new Professor(this.getIntent().getIntExtra("type",(byte) 0));
+        	user = new Professor(this.getIntent().getIntExtra("token",0));
         }
-        //mTitle = mDrawerTitle = getTitle();
-        mTitle = mDrawerTitle = (user.type==3?"Aluno":"Professor")+"Nome do Maluco";
+        mTitle = mDrawerTitle = getTitle();
+        //mTitle = mDrawerTitle = user.type + ": " + user.userName;
         mTitles = getMyTitles();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -105,9 +106,10 @@ public class MainActivity extends Activity {
 
 	private String[] getMyTitles() {
 		String[] myTitles = getResources().getStringArray(R.array.menu_lateral);
-		if (user.type == 4){//professor (exception)
+		//TODO
+		/*if (user.type == "professor"){//(exception)
 			myTitles[2] = "Iniciar Aula";
-		}
+		}*/
 		return myTitles;
 	}
 
@@ -186,7 +188,25 @@ public class MainActivity extends Activity {
 		builder.setMessage("Tem certeza que desaja sair?").setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 		           @Override
 				public void onClick(DialogInterface dialog, int id) {
-		        	   finish();
+		        	   //Deslogar no servidor
+			       		RestClient obj = new RestClient();
+			       		//TODO
+			    		String pathLogin = "login/usuario/"+user.userName+"/tipo/"+"-------"+"/chave/"+String.valueOf(user.token);
+			    		String[] request = { "get", pathLogin };
+			    		String retorno = null;
+			    		try {
+			    			retorno = obj.execute(request).get();
+			    		} catch (InterruptedException e) {
+			    			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
+			    		} catch (ExecutionException e) {
+			    			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
+			    		}
+			    		for (int i = 0; i < 3; i++) {
+			    			if(XmlManager.manageXmlLogout(retorno)){
+			    				finish();
+			    			}
+						}		        	   
+		        	   
 		           }
 		       }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
 		           @Override

@@ -4,7 +4,7 @@ public class Aluno extends Usuario {
 	
 	public Aluno(int token){
 		super.setTokenLogado(token);
-		super.type = 3;
+		///super.type = "Aluno";
 	}
 	
 	public boolean enviarTick(String Disciplina){

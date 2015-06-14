@@ -75,12 +75,12 @@ public class LoginActivity extends Activity{
 		
 	}
 	public void debugProf(View view){
-		callNewIntent(view, 4, 0);//professor
+		callNewIntent(view, "Professor", 0);//professor
 		
 	}
 
 	public void debugAlun(View view){
-		callNewIntent(view, 3, 0);//student
+		callNewIntent(view, "Professor", 0);//student
 		
 	}
 
@@ -94,11 +94,12 @@ public class LoginActivity extends Activity{
     	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 	
-	public void callNewIntent(View view, int type, int token) {
-		Intent intentAluno = new Intent(view.getContext(), MainActivity.class);
-		intentAluno.putExtra("type", type);
-		intentAluno.putExtra("token", token);
-		startActivity(intentAluno);
+	public void callNewIntent(View view, String type, int token) {
+		Intent mainIntent = new Intent(view.getContext(), MainActivity.class);
+		mainIntent.putExtra("type", type);
+		mainIntent.putExtra("mariajoaquina", "0");
+		mainIntent.putExtra("token", Integer.toString(token));
+		startActivity(mainIntent);
 		finish();
 	}
 	
@@ -108,7 +109,7 @@ public class LoginActivity extends Activity{
 			return;
 		}
 		
-		//return success, fail or the type of the user.
+		//return success, fail or the type of the userName.
 		RestClient obj = new RestClient();
 		String pathLogin = "login/usuario/" + login + "/senha/" + senha;
 		String[] request = { "get", pathLogin };
@@ -132,10 +133,10 @@ public class LoginActivity extends Activity{
 			this.showPopUpMessage("Login ou Senha inválidos");
 			break;
 		case 3:
-			this.callNewIntent(view, 3, ret[1]);//student
+			this.callNewIntent(view, "Aluno", ret[1]);//student
 			break;
 		case 4:
-			this.callNewIntent(view, 4, ret[1]); //professor
+			this.callNewIntent(view, "Professor", ret[1]); //professor
 			break;
 		default:
 			Log.e(TAG, "ERROR: Invalid value \nMSG: Invalid value from XmlManager.manageXmlLogin(retorno);");

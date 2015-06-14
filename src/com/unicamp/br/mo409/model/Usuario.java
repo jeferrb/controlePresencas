@@ -5,9 +5,10 @@ import com.unicamp.br.mo409.controller.MainActivity.AlterarSenhaFragment;
 
 
 public class Usuario {
-	private boolean isInAula = false;
-	public int type;
-	private int token = 0;
+	public boolean isInAula = false;
+	//public String type;
+	public String userName;
+	public int token = 0;
 	
 	public boolean isInAula() {
 		return isInAula;

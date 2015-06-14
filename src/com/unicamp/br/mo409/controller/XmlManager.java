@@ -64,8 +64,8 @@ public class XmlManager {
                 			 retorno [0] = 4; 
                 		 }
                 	 }
-                	 if (name.equals("token")){
-                		retorno [1] = Integer.parseInt(text); 
+                	 if (name.equals("chave")){
+                		retorno [1] = Integer.parseInt(text);
                 	 }
                  break;
               }
@@ -77,6 +77,64 @@ public class XmlManager {
         }
 		return retorno;
     }
+	
+	public static boolean manageXmlLogout(String rawXml){
+		//rawXml = test;
+		/*
+		 * return:
+		 * 	0 in case of fail
+		 * 	1 in case of Login or Password incorrect
+		 * 	2 reserved
+		 * 	3 in case of student
+		 * 	4 in case of professor
+		*/
+		
+		/*	input example:
+		*  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+		*	<LoginUsuario>
+		*		<sucess>true</sucess>
+		*	</LoginUsuario>
+		*/
+		XmlPullParserFactory xmlFactoryObject;
+        int event;
+        String text=null;
+        int[] retorno = new int[2];
+        retorno [0] = 0;
+        try {
+    		InputStream stream = new ByteArrayInputStream(rawXml.getBytes("UTF-8"));
+            xmlFactoryObject = XmlPullParserFactory.newInstance();
+            XmlPullParser myParser = xmlFactoryObject.newPullParser();
+            
+            myParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            myParser.setInput(stream, null);
+           event = myParser.getEventType();
+           while (event != XmlPullParser.END_DOCUMENT) {
+              String name=myParser.getName();
+              switch (event){
+                 case XmlPullParser.START_TAG:
+                 break;
+                 case XmlPullParser.TEXT:
+                 text = myParser.getText();
+                 break;
+                 case XmlPullParser.END_TAG:
+                	 if (name.equals("sucess")){
+                		 if(!text.equals("true")){
+                			 return false;
+                		 }else{
+                			 return true;
+                		 }
+                	 }
+                 break;
+              }
+              event = myParser.next();
+           }
+        }
+        catch (Exception e) {
+           e.printStackTrace();
+        }
+		return false;
+    }
+
 	
 	public static String[][] manageXmlTurmas(String rawXml){
 		/*
@@ -95,6 +153,7 @@ public class XmlManager {
 		*		</LoginTurma>
 		*	</turmaLogins>
 		*/
+		String[][] retorno = new String[2][1];
 		XmlPullParserFactory xmlFactoryObject;
         int event;
         String text=null;
@@ -137,6 +196,7 @@ public class XmlManager {
         catch (Exception e) {
            e.printStackTrace();
         }
-		return null;
+        //TODO
+		return retorno;
     }
 }
