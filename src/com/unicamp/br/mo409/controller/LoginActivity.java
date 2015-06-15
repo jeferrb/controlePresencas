@@ -74,15 +74,7 @@ public class LoginActivity extends Activity{
 	public void recuperaSenha(View view){
 		
 	}
-	public void debugProf(View view){
-		callNewIntent(view, "Professor", 0);//professor
-		
-	}
-
-	public void debugAlun(View view){
-		callNewIntent(view, "Professor", 0);//student
-		
-	}
+	
 
 	public void showPopUpMessage(String message) {
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -94,11 +86,11 @@ public class LoginActivity extends Activity{
     	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }
 	
-	public void callNewIntent(View view, String type, int token) {
+	public void callNewIntent(View view, String type, String ret, String userName) {
 		Intent mainIntent = new Intent(view.getContext(), MainActivity.class);
 		mainIntent.putExtra("type", type);
-		mainIntent.putExtra("mariajoaquina", "0");
-		mainIntent.putExtra("token", Integer.toString(token));
+		mainIntent.putExtra("token", ret);
+		mainIntent.putExtra("userName", userName);
 		startActivity(mainIntent);
 		finish();
 	}
@@ -121,28 +113,28 @@ public class LoginActivity extends Activity{
 		} catch (ExecutionException e) {
 			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
 		}
-		int[] ret = XmlManager.manageXmlLogin(retorno);
+		String[] ret = XmlManager.manageXmlLogin(retorno);
 		
-		int resultado = ret[0];
+		String resultado = ret[0];
 
-		switch (resultado) {
-		case 0:
-			this.showToastMessage("Ocorreu um erro desconhecido, por favor tente novamente");
-			break;
-		case 1:
-			this.showPopUpMessage("Login ou Senha inválidos");
-			break;
-		case 3:
-			this.callNewIntent(view, "Aluno", ret[1]);//student
-			break;
-		case 4:
-			this.callNewIntent(view, "Professor", ret[1]); //professor
-			break;
-		default:
-			Log.e(TAG, "ERROR: Invalid value \nMSG: Invalid value from XmlManager.manageXmlLogin(retorno);");
-			this.showPopUpMessage("Ocerreu um erro inesperado, por favor tente novamente");
-			break;
+		if (resultado.equals("Aluno")) {
+			this.callNewIntent(view, "Aluno", ret[1], login);//student
+		}else if (resultado.equals("Professor")) {
+			this.callNewIntent(view, "Professor", ret[1], login); //professor
+		}else{
+			this.showPopUpMessage(resultado);
 		}
+	}
+	
+	
+	public void debugProf(View view){
+		callNewIntent(view, "Professor", "0", "eli");//professor
+		
+	}
+
+	public void debugAlun(View view){
+		callNewIntent(view, "Aluno", "0", "jef");//student
+		
 	}
 
 }

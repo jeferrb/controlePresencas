@@ -16,8 +16,7 @@
 
 package com.unicamp.br.mo409.controller;
 
-import java.util.Iterator;
-import java.util.Locale;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
@@ -25,7 +24,6 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -40,7 +38,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.example.android.navigationdrawerexample.R;
@@ -61,8 +58,6 @@ public class MainActivity extends Activity {
     private String[] mTitles;
 	private Usuario user;
 	
-    
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +69,10 @@ public class MainActivity extends Activity {
         }
         if (tipo.equals("Professor")){
         	//professor
-        	user = new Professor(this.getIntent().getIntExtra("token",0));
+        	user = new Professor(this.getIntent().getIntExtra("token", 0));
         }
+        user.type = tipo;
+        user.userName = this.getIntent().getStringExtra("userName");
         mTitle = mDrawerTitle = getTitle();
         //mTitle = mDrawerTitle = user.type + ": " + user.userName;
         mTitles = getMyTitles();
@@ -106,10 +103,14 @@ public class MainActivity extends Activity {
 
 	private String[] getMyTitles() {
 		String[] myTitles = getResources().getStringArray(R.array.menu_lateral);
-		//TODO
-		/*if (user.type == "professor"){//(exception)
-			myTitles[2] = "Iniciar Aula";
-		}*/
+		
+		if (user.type == "Professor"){//(exception)
+			if (user.isInAula) {
+				myTitles[1] = "Finalizar Aula";
+			}else{
+				myTitles[1] = "Iniciar Aula";
+			}
+		}
 		return myTitles;
 	}
 
@@ -169,7 +170,8 @@ public class MainActivity extends Activity {
 	private void selectItem(int position) {
 		switch (position) {
 			case 0: // Disciplinas
-				user.getDisciplinas();
+				getDisciplinas();
+				callNewFragment(position, new DisciplinasFragment());
 				break;
 			case 1: // check-out || check-in
 				user.checkInOut();
@@ -178,35 +180,17 @@ public class MainActivity extends Activity {
 				user.alterarSenha(position, this);
 				break;
 			case 3:
-				doLogout();
+				tryLogout();
 				break;
 			}
     }
 
-	private void doLogout() {
+	private void tryLogout() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage("Tem certeza que desaja sair?").setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 		           @Override
 				public void onClick(DialogInterface dialog, int id) {
-		        	   //Deslogar no servidor
-			       		RestClient obj = new RestClient();
-			       		//TODO
-			    		String pathLogin = "login/usuario/"+user.userName+"/tipo/"+"-------"+"/chave/"+String.valueOf(user.token);
-			    		String[] request = { "get", pathLogin };
-			    		String retorno = null;
-			    		try {
-			    			retorno = obj.execute(request).get();
-			    		} catch (InterruptedException e) {
-			    			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
-			    		} catch (ExecutionException e) {
-			    			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
-			    		}
-			    		for (int i = 0; i < 3; i++) {
-			    			if(XmlManager.manageXmlLogout(retorno)){
-			    				finish();
-			    			}
-						}		        	   
-		        	   
+		        	   doLogout();
 		           }
 		       }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
 		           @Override
@@ -215,6 +199,28 @@ public class MainActivity extends Activity {
 		           }
 		       });
 		builder.show();
+	}
+	
+	void doLogout() {
+		//Deslogar no servidor
+       		RestClient obj = new RestClient();
+    		String pathLogOut = "login/usuario/"+user.userName+"/tipo/"+user.type;
+    		Log.e("Debug", "pathLogOut: "+pathLogOut);
+    		String[] request = { "get", pathLogOut };
+    		String retorno = null;
+    		try {
+    			retorno = obj.execute(request).get();
+    		} catch (InterruptedException e) {
+    			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
+    		} catch (ExecutionException e) {
+    			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
+    		}
+    		retorno = XmlManager.manageXmlLogout(retorno);
+    		if(retorno.equals("Sucesso")){
+    				finish();
+			}else{
+				showPopUpMessage(retorno);
+			}
 	}
 
 	public void callNewFragment(int position, Fragment fragment) {
@@ -256,29 +262,12 @@ public class MainActivity extends Activity {
 
     
      //Fragment that appears in the "content_frame"
-     
-    public static class MyFragment extends Fragment {
-        public static final String ARG_MENU_NUMBER = "planet_number";
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_disciplinas, container, false);
-            int i = getArguments().getInt(ARG_MENU_NUMBER);
-            String itemDoMennu = getResources().getStringArray(R.array.menu_lateral)[i];
-
-            int imageId = getResources().getIdentifier(itemDoMennu.toLowerCase(Locale.getDefault()),
-                            "drawable", getActivity().getPackageName());
-            ((ImageView) rootView.findViewById(R.id.image)).setImageResource(imageId);
-            getActivity().setTitle(itemDoMennu);
-            return rootView;
-        }
-    }
     public static class AlterarSenhaFragment extends Fragment {
         public AlterarSenhaFragment() {
             // Empty constructor required for fragment subclasses
+        	//TODO
         }
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
@@ -288,20 +277,33 @@ public class MainActivity extends Activity {
             return rootView;
         }
     }
+    public static class DisciplinasFragment extends Fragment {
+        public DisciplinasFragment() {
+            // Empty constructor required for fragment subclasses
+        	//TODO
+        }
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.activity_disciplinas, container, false);
+
+            getActivity().setTitle("Disciplinas");
+            return rootView;
+        }
+    }
     
-    /*private void showPopUpMessage(String message) {
+    private void showPopUpMessage(String message) {
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 		alertDialog.setMessage(message);
 		alertDialog.show();
-	}*/
+	}
 /*    private void showToastMessage(String message){
     	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }*/
     
-    public static void getDisciplinas(int token) {
+    public void getDisciplinas() {
 		RestClient obj = new RestClient();
-		//TODO
-		String pathLogin = "getTurma/"+String.valueOf(token);
+		String pathLogin = "aula/usuario/"+user.userName+"/tipo/"+user.type;
 		String[] request = { "get", pathLogin };
 		String retorno = null;
 		try {
@@ -311,6 +313,13 @@ public class MainActivity extends Activity {
 		} catch (ExecutionException e) {
 			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
 		}
-		String[][] ret = XmlManager.manageXmlTurmas(retorno);
+		ArrayList<String[]> ret = XmlManager.manageXmlTurmas(retorno);
+		
+		
+		for (String[] i : ret) {
+			System.out.println(i);
+		}
+		
+		
 	}
 }

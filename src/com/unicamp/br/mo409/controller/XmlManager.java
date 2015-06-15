@@ -2,23 +2,22 @@ package com.unicamp.br.mo409.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
+
+import android.util.Log;
 
 public class XmlManager {
 	static String TAG = "XmlManager";
 	//static String test = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n<LoginUsuario>\n<sucess>true</sucess>\n<tipo>Aluno</tipo>\n</LoginUsuario>";
 
-	public static int[] manageXmlLogin(String rawXml){
+	public static String[] manageXmlLogin(String rawXml){
 		//rawXml = test;
 		/*
-		 * return:
-		 * 	0 in case of fail
-		 * 	1 in case of Login or Password incorrect
-		 * 	2 reserved
-		 * 	3 in case of student
-		 * 	4 in case of professor
+		 * return[0]: status
+		 * return[1]: 
 		*/
 		
 		/*	input example:
@@ -31,8 +30,8 @@ public class XmlManager {
 		XmlPullParserFactory xmlFactoryObject;
         int event;
         String text=null;
-        int[] retorno = new int[2];
-        retorno [0] = 0;
+        String[] retorno = new String[2];
+        retorno [0] = "Falha descolhecida";
         try {
     		InputStream stream = new ByteArrayInputStream(rawXml.getBytes("UTF-8"));
             xmlFactoryObject = XmlPullParserFactory.newInstance();
@@ -52,20 +51,16 @@ public class XmlManager {
                  case XmlPullParser.END_TAG:
                 	 if (name.equals("sucess")){
                 		 if(!text.equals("true")){
-                			 retorno [0] = 1; 
+                			 retorno [0] = "Usuário já conectado";
                 			 return retorno;
                 		 }
                 	 }
                 	 if (name.equals("tipo")){
-                		 if(!text.equals("Aluno")){
-                			 retorno [0] = 3; 
-                		 }
-                		 if(!text.equals("Professor")){
-                			 retorno [0] = 4; 
-                		 }
+                		 retorno [0] = text; 
                 	 }
                 	 if (name.equals("chave")){
-                		retorno [1] = Integer.parseInt(text);
+                		 Log.e(TAG, "Chave: "+text );
+                		retorno [1] = text;
                 	 }
                  break;
               }
@@ -78,7 +73,7 @@ public class XmlManager {
 		return retorno;
     }
 	
-	public static boolean manageXmlLogout(String rawXml){
+	public static String manageXmlLogout(String rawXml){
 		//rawXml = test;
 		/*
 		 * return:
@@ -89,11 +84,18 @@ public class XmlManager {
 		 * 	4 in case of professor
 		*/
 		
-		/*	input example:
+		/*	input examples:
 		*  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 		*	<LoginUsuario>
 		*		<sucess>true</sucess>
 		*	</LoginUsuario>
+		*
+		*<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+		*	<LoginUsuario>
+		*		<sucess>false</sucess>
+		*		<tipo>Chave errada</tipo>
+		*	</LoginUsuario>
+		*
 		*/
 		XmlPullParserFactory xmlFactoryObject;
         int event;
@@ -118,11 +120,11 @@ public class XmlManager {
                  break;
                  case XmlPullParser.END_TAG:
                 	 if (name.equals("sucess")){
-                		 if(!text.equals("true")){
-                			 return false;
-                		 }else{
-                			 return true;
+                		 if(text.equals("true")){
+                			 return "Sucesso";
                 		 }
+                	 }if (name.equals("tipo")){
+                			 return text;
                 	 }
                  break;
               }
@@ -132,11 +134,11 @@ public class XmlManager {
         catch (Exception e) {
            e.printStackTrace();
         }
-		return false;
+		return "Falha de rede!";
     }
 
 	
-	public static String[][] manageXmlTurmas(String rawXml){
+	public static ArrayList<String[]> manageXmlTurmas(String rawXml){
 		/*
 		 * return a array of classes
 		 * with each [i] corresponding a each discipline
@@ -153,7 +155,10 @@ public class XmlManager {
 		*		</LoginTurma>
 		*	</turmaLogins>
 		*/
-		String[][] retorno = new String[2][1];
+		
+		ArrayList<String[]> retorno = new ArrayList<String[]>();
+		
+		String[] current = new String[3];
 		XmlPullParserFactory xmlFactoryObject;
         int event;
         String text=null;
@@ -175,18 +180,14 @@ public class XmlManager {
                  text = myParser.getText();
                  break;
                  case XmlPullParser.END_TAG:
-                	 if (name.equals("sucess")){
-                		 if(!text.equals("true")){
-                			 return null; 
-                		 }
+                	 if (name.equals("chamadaAberta")){
+                		 current[2] = text;
                 	 }
-                	 if (name.equals("tipo")){
-                		 if(!text.equals("Aluno")){
-                			 return null; 
-                		 }
-                		 if(!text.equals("Professor")){
-                			 return null; 
-                		 }
+                	 if (name.equals("idTurma")){
+                		 current[0] = text;
+                	 }if (name.equals("nomeDisciplina")){
+                		 current[1] = text;
+                		 retorno.add(current);
                 	 }
                  break;
               }

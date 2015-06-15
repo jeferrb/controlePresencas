@@ -18,7 +18,7 @@
 <resources>
 
     <string name="app_name">Controle de Alunos</string>
-    
+
     <string-array name="menu_lateral">
         <item>Disciplinas</item>
         <item>Check-out</item>
@@ -37,5 +37,6 @@
     <string name="action_settings">Configurações</string>
     <string name="title_activity_login">Login</string>
     <string name="title_activity_alterar_senha">Alterar Senha</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

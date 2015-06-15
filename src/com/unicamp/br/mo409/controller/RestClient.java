@@ -34,7 +34,7 @@ public class RestClient extends AsyncTask<String, String, String> {
         HttpClient httpclient = new DefaultHttpClient();
         try {
             if(params[0].equals("get")){
-            	Log.d(TAG, "GET");
+            	Log.d(TAG, "GET: " + params[1]);
             	HttpGet request = new HttpGet(DIRECCION_GET+params[1]);
                 HttpResponse response = httpclient.execute(request);
                 HttpEntity entity = response.getEntity();
@@ -43,7 +43,7 @@ public class RestClient extends AsyncTask<String, String, String> {
                 Log.d(TAG, messageReceived);
                 return(messageReceived);
             } else if(params[0].equals("post")){
-            	Log.d(TAG, "POST");
+            	Log.d(TAG, "POST: " + params[1]);
             	HttpPost post = new HttpPost(DIRECCION_POST);
                 post.setHeader("Content-Type", "application/json");
                 StringEntity se = new StringEntity(params[1]);

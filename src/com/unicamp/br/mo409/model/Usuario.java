@@ -6,7 +6,7 @@ import com.unicamp.br.mo409.controller.MainActivity.AlterarSenhaFragment;
 
 public class Usuario {
 	public boolean isInAula = false;
-	//public String type;
+	public String type;
 	public String userName;
 	public int token = 0;
 	
@@ -27,9 +27,6 @@ public class Usuario {
 		this.token = token;
 	}
 
-	public void getDisciplinas() {
-		MainActivity.getDisciplinas(token);
-	}
 
 	public void checkInOut() {
 		if (isInAula) {
