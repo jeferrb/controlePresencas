@@ -25,3 +25,9 @@ proguard/
 
 # Log Files
 *.log
+
+# libs
+#libs/
+
+# teste
+#src/com/unicamp/br/mo409/statemachines/
