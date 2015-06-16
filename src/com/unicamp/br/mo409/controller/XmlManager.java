@@ -170,7 +170,6 @@ public class XmlManager {
             myParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             myParser.setInput(stream, null);
            event = myParser.getEventType();
-           //TODO
            while (event != XmlPullParser.END_DOCUMENT) {
               String name=myParser.getName();
               switch (event){
@@ -200,4 +199,114 @@ public class XmlManager {
         //TODO
 		return retorno;
     }
+	
+	
+	public static String manageXmlCheckIn(String rawXml){
+		//TODO
+		
+		/*
+		 * input example: 
+		 * 
+		 * <InicializaAula>
+		 * 		<isInicializada>true</isInicializada>
+		 * </InicializaAula>
+		 * 
+		 */
+		XmlPullParserFactory xmlFactoryObject;
+        int event;
+        String text=null;
+        int[] retorno = new int[2];
+        retorno [0] = 0;
+        try {
+    		InputStream stream = new ByteArrayInputStream(rawXml.getBytes("UTF-8"));
+            xmlFactoryObject = XmlPullParserFactory.newInstance();
+            XmlPullParser myParser = xmlFactoryObject.newPullParser();
+            
+            myParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            myParser.setInput(stream, null);
+           event = myParser.getEventType();
+           while (event != XmlPullParser.END_DOCUMENT) {
+              String name=myParser.getName();
+              switch (event){
+                 case XmlPullParser.START_TAG:
+                 break;
+                 case XmlPullParser.TEXT:
+                 text = myParser.getText();
+                 break;
+                 case XmlPullParser.END_TAG:
+                	 if (name.equals("isInicializada")){
+                		 if(text.equals("true")){
+                			 return "true";
+                		 }
+                		 return text;
+                	 }
+                 break;
+              }
+              event = myParser.next();
+           }
+        }
+        catch (Exception e) {
+           e.printStackTrace();
+        }
+		return "Falha de rede!";
+    }
+	
+	
+	
+	public static String manageXmlCheckOut(String rawXml){
+		//TODO
+
+		/*	input examples:
+		* 
+		* 
+		* 
+		* 
+		* 
+		* 	<InicializaAula>
+		*		<causa>Chamada ja aberta</causa>
+		*		<isInicializada>false</isInicializada>
+		*	</InicializaAula>
+		*
+		*/
+		XmlPullParserFactory xmlFactoryObject;
+        int event;
+        String text=null;
+        int[] retorno = new int[2];
+        retorno [0] = 0;
+        try {
+    		InputStream stream = new ByteArrayInputStream(rawXml.getBytes("UTF-8"));
+            xmlFactoryObject = XmlPullParserFactory.newInstance();
+            XmlPullParser myParser = xmlFactoryObject.newPullParser();
+            
+            myParser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            myParser.setInput(stream, null);
+           event = myParser.getEventType();
+           while (event != XmlPullParser.END_DOCUMENT) {
+              String name=myParser.getName();
+              switch (event){
+                 case XmlPullParser.START_TAG:
+                 break;
+                 case XmlPullParser.TEXT:
+                 text = myParser.getText();
+                 break;
+                 case XmlPullParser.END_TAG:
+                	 if (name.equals("sucess")){
+                		 if(text.equals("true")){
+                			 return "true";
+                		 }
+                	 }if (name.equals("causa")){
+                			 return text;
+                	 }
+                 break;
+              }
+              event = myParser.next();
+           }
+        }
+        catch (Exception e) {
+           e.printStackTrace();
+        }
+		return "Falha de rede!";
+    }
+	
+	
 }

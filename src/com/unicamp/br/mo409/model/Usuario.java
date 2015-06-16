@@ -5,17 +5,17 @@ import com.unicamp.br.mo409.controller.MainActivity.AlterarSenhaFragment;
 
 
 public class Usuario {
-	public boolean isInAula = false;
+	public int idTurma = 0;
 	public String type;
 	public String userName;
 	public int token = 0;
 	
 	public boolean isInAula() {
-		return isInAula;
+		return (!(idTurma==0));
 	}
 
-	public void setInAula(boolean isInAula) {
-		this.isInAula = isInAula;
+	public void setInAula(int disciplina) {
+		this.idTurma = disciplina;
 	}
 
 
@@ -27,16 +27,6 @@ public class Usuario {
 		this.token = token;
 	}
 
-
-	public void checkInOut() {
-		if (isInAula) {
-			//check-out
-			
-		}else{
-			//check-in
-			
-		}
-	}
 
 	public void alterarSenha(int position, MainActivity mainActivity) {
 		// TODO Auto-generated method stub

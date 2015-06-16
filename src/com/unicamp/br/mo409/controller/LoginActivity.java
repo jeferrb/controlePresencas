@@ -102,17 +102,7 @@ public class LoginActivity extends Activity{
 		}
 		
 		//return success, fail or the type of the userName.
-		RestClient obj = new RestClient();
-		String pathLogin = "login/usuario/" + login + "/senha/" + senha;
-		String[] request = { "get", pathLogin };
-		String retorno = null;
-		try {
-			retorno = obj.execute(request).get();
-		} catch (InterruptedException e) {
-			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
-		} catch (ExecutionException e) {
-			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
-		}
+		String retorno = RestClient.doRequisition("login/usuario/" + login + "/senha/" + senha);
 		String[] ret = XmlManager.manageXmlLogin(retorno);
 		
 		String resultado = ret[0];

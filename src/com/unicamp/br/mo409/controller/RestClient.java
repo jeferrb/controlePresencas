@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -73,8 +74,7 @@ public class RestClient extends AsyncTask<String, String, String> {
         StringBuilder sb = null;
         try {
             sb = new StringBuilder();
-            BufferedReader r = new BufferedReader(new InputStreamReader(
-                    instream));
+            BufferedReader r = new BufferedReader(new InputStreamReader(instream));
             for (String line = r.readLine(); line != null; line = r.readLine()) {
                 sb.append(line);
             }
@@ -85,4 +85,18 @@ public class RestClient extends AsyncTask<String, String, String> {
         }
         return sb.toString();
     }
+    
+    public static String doRequisition(String pathLogin) {
+		RestClient obj = new RestClient();
+		String[] request = { "get", pathLogin };
+		String retorno = null;
+		try {
+			retorno = obj.execute(request).get();
+		} catch (InterruptedException e) {
+			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
+		} catch (ExecutionException e) {
+			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
+		}
+		return retorno;
+	}
 }

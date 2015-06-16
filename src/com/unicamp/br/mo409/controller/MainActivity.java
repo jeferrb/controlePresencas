@@ -105,12 +105,19 @@ public class MainActivity extends Activity {
 		String[] myTitles = getResources().getStringArray(R.array.menu_lateral);
 		
 		if (user.type == "Professor"){//(exception)
-			if (user.isInAula) {
+			if (user.isInAula()) {
 				myTitles[1] = "Finalizar Aula";
 			}else{
 				myTitles[1] = "Iniciar Aula";
 			}
+		}else if (user.type == "Aluno") {
+			if (user.isInAula()) {
+				myTitles[1] = "Check-out";
+			}else{
+				myTitles[1] = "Check-in";
+			}
 		}
+		myTitles[1]+=" em MO123";
 		return myTitles;
 	}
 
@@ -169,21 +176,26 @@ public class MainActivity extends Activity {
 
 	private void selectItem(int position) {
 		switch (position) {
-			case 0: // Disciplinas
-				getDisciplinas();
-				callNewFragment(position, new DisciplinasFragment());
-				break;
-			case 1: // check-out || check-in
-				user.checkInOut();
-				break;
-			case 2:
-				user.alterarSenha(position, this);
-				break;
-			case 3:
-				tryLogout();
-				break;
+		case 0: // Disciplinas
+			getDisciplinas();
+			callNewFragment(position, new DisciplinasFragment());
+			break;
+		case 1: // check-out || check-in
+			if (user.isInAula()) {
+				//TODO: Chamar escolher disciplinas ou desativar botão.
+				doCheckIn(1);
+			} else {
+				doCheckOut();
 			}
-    }
+			break;
+		case 2:
+			user.alterarSenha(position, this);
+			break;
+		case 3:
+			tryLogout();
+			break;
+		}
+	}
 
 	private void tryLogout() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -202,25 +214,14 @@ public class MainActivity extends Activity {
 	}
 	
 	void doLogout() {
-		//Deslogar no servidor
-       		RestClient obj = new RestClient();
-    		String pathLogOut = "login/usuario/"+user.userName+"/tipo/"+user.type;
-    		Log.e("Debug", "pathLogOut: "+pathLogOut);
-    		String[] request = { "get", pathLogOut };
-    		String retorno = null;
-    		try {
-    			retorno = obj.execute(request).get();
-    		} catch (InterruptedException e) {
-    			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
-    		} catch (ExecutionException e) {
-    			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
-    		}
-    		retorno = XmlManager.manageXmlLogout(retorno);
-    		if(retorno.equals("Sucesso")){
-    				finish();
-			}else{
-				showPopUpMessage(retorno);
-			}
+		// Deslogar no servidor
+		String retorno = RestClient.doRequisition("login/usuario/" + user.userName + "/tipo/" + user.type);
+		retorno = XmlManager.manageXmlLogout(retorno);
+		if (retorno.equals("Sucesso")) {
+			finish();
+		} else {
+			showPopUpMessage(retorno);
+		}
 	}
 
 	public void callNewFragment(int position, Fragment fragment) {
@@ -301,25 +302,34 @@ public class MainActivity extends Activity {
     	Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
     }*/
     
-    public void getDisciplinas() {
-		RestClient obj = new RestClient();
-		String pathLogin = "aula/usuario/"+user.userName+"/tipo/"+user.type;
-		String[] request = { "get", pathLogin };
-		String retorno = null;
-		try {
-			retorno = obj.execute(request).get();
-		} catch (InterruptedException e) {
-			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
-		} catch (ExecutionException e) {
-			Log.e(TAG, "ERROR: " + e.toString() + "\nMSG: " + e.getMessage());
-		}
+    public void getDisciplinas() {		
+		//TODO
+    	String retorno = RestClient.doRequisition("aula/usuario/"+user.userName+"/tipo/"+user.type);
 		ArrayList<String[]> ret = XmlManager.manageXmlTurmas(retorno);
-		
 		
 		for (String[] i : ret) {
 			System.out.println(i);
 		}
-		
-		
+	}
+    
+
+	private void doCheckIn(int idTurma) {
+		String retorno = RestClient.doRequisition("aula/usuario/"+user.userName+"/turmaId/"+idTurma);
+		String ret = XmlManager.manageXmlCheckIn(retorno);
+		if (ret.equals("true")) {
+			user.idTurma = idTurma;
+		}else{
+			showPopUpMessage(ret);
+		}
+	}
+	
+	private void doCheckOut() {
+		String retorno = RestClient.doRequisition("aula/usuario/"+user.userName+"/tipo/"+user.type);
+		String ret = XmlManager.manageXmlCheckOut(retorno);
+		if (ret.equals("true")) {
+			user.idTurma = 0;
+		}else{
+			showPopUpMessage(ret);
+		}
 	}
 }
