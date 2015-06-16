@@ -1,13 +1,10 @@
 package com.unicamp.br.mo409.controller;
 
-import java.util.concurrent.ExecutionException;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -115,7 +112,6 @@ public class LoginActivity extends Activity{
 			this.showPopUpMessage(resultado);
 		}
 	}
-	
 	
 	public void debugProf(View view){
 		callNewIntent(view, "Professor", "0", "eli");//professor

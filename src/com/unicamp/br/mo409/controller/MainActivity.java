@@ -17,7 +17,6 @@
 package com.unicamp.br.mo409.controller;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,7 +28,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -73,8 +71,8 @@ public class MainActivity extends Activity {
         }
         user.type = tipo;
         user.userName = this.getIntent().getStringExtra("userName");
-        mTitle = mDrawerTitle = getTitle();
-        //mTitle = mDrawerTitle = user.type + ": " + user.userName;
+        //mTitle = mDrawerTitle = getTitle();
+        mTitle = mDrawerTitle = user.type + ": " + user.userName;
         mTitles = getMyTitles();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -82,8 +80,7 @@ public class MainActivity extends Activity {
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mTitles));
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mTitles));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
@@ -104,13 +101,13 @@ public class MainActivity extends Activity {
 	private String[] getMyTitles() {
 		String[] myTitles = getResources().getStringArray(R.array.menu_lateral);
 		
-		if (user.type == "Professor"){//(exception)
+		if (user.type.equals("Professor")){//(exception)
 			if (user.isInAula()) {
 				myTitles[1] = "Finalizar Aula";
 			}else{
 				myTitles[1] = "Iniciar Aula";
 			}
-		}else if (user.type == "Aluno") {
+		}else if (user.type.equals("Aluno")) {
 			if (user.isInAula()) {
 				myTitles[1] = "Check-out";
 			}else{
@@ -120,6 +117,31 @@ public class MainActivity extends Activity {
 		myTitles[1]+=" em MO123";
 		return myTitles;
 	}
+	/*private String[] getMyTitles() {
+		String[] myTitles = getResources().getStringArray(R.array.menu_lateral);
+		if (user.isInAula()) {
+			if (user.type.equals("Professor")) {// (exception)
+				myTitles[1] = "Finalizar Aula";
+			} else if (user.type.equals("Aluno")) {
+				myTitles[1] = "Check-out";
+			}
+			myTitles[1] += " em MO123";
+		} else {
+			myTitles = removeElement(myTitles, 1);
+		}
+		return myTitles;
+	}
+
+	private String[] removeElement(String[] myTitles, int index) {
+		String[] myTitles2 = new String[myTitles.length - 1];
+		for (int i = 0, j = 0; i < myTitles.length; i++) {
+			if (i != index) {
+				myTitles2[j] = myTitles[i];
+				j++;
+			}
+		}
+		return myTitles2;
+	}*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -128,15 +150,7 @@ public class MainActivity extends Activity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    /* Called whenever we call invalidateOptionsMenu() */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
-        return super.onPrepareOptionsMenu(menu);
-    }
-    
+   
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
          // The action bar home/up action should open or close the drawer.
@@ -180,24 +194,24 @@ public class MainActivity extends Activity {
 			getDisciplinas();
 			callNewFragment(position, new DisciplinasFragment());
 			break;
-		case 1: // check-out || check-in
+		case 1: // check-in/out
 			if (user.isInAula()) {
 				//TODO: Chamar escolher disciplinas ou desativar botão.
-				doCheckIn(1);
-			} else {
 				doCheckOut();
+			} else {
+				doCheckIn(1);
 			}
 			break;
 		case 2:
 			user.alterarSenha(position, this);
 			break;
 		case 3:
-			tryLogout();
+			askForLogout();
 			break;
 		}
 	}
 
-	private void tryLogout() {
+	private void askForLogout() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage("Tem certeza que desaja sair?").setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 		           @Override
@@ -332,4 +346,9 @@ public class MainActivity extends Activity {
 			showPopUpMessage(ret);
 		}
 	}
+	@Override
+	public void onBackPressed() {
+	    askForLogout();
+	}
+	
 }
