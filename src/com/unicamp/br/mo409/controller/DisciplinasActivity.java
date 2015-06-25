@@ -6,7 +6,10 @@ import java.util.Arrays;
 import com.example.android.navigationdrawerexample.R;
   
 import android.app.Activity;  
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;  
+import android.view.View;
 import android.widget.ArrayAdapter;  
 import android.widget.ListView;  
   
@@ -44,4 +47,48 @@ public class DisciplinasActivity extends Activity {
     // Set the ArrayAdapter as the ListView's adapter.  
     mainListView.setAdapter( listAdapter );        
   }  
+  
+  public void tryLogout(View view){
+		askForLogout();
+	}
+  
+  private void askForLogout() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Tem certeza que desaja sair?").setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+		           @Override
+				public void onClick(DialogInterface dialog, int id) {
+		        	   doLogout();
+		           }
+		       }).setNegativeButton("Não", new DialogInterface.OnClickListener() {
+		           @Override
+				public void onClick(DialogInterface dialog, int id) {
+		        	   //Do nothing
+		           }
+		       });
+		builder.show();
+	}
+	
+	void doLogout() {
+		// Deslogar no servidor
+		String retorno = RestClient.doRequisition("login/usuario/Joao/tipo/Aluno");
+		retorno = XmlManager.manageXmlLogout(retorno);
+		if (retorno.equals("Sucesso")) {
+			finish();
+		} else {
+			retorno = RestClient.doRequisition("login/usuario/Eliana/tipo/Professor");
+			retorno = XmlManager.manageXmlLogout(retorno);
+			if (retorno.equals("Sucesso")) {
+				finish();
+			} else {
+				showPopUpMessage(retorno);
+			}
+		}
+	}
+	
+	public void showPopUpMessage(String message) {
+		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+		alertDialog.setMessage(message);
+		alertDialog.show();
+	}
+  
 }

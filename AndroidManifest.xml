@@ -59,6 +59,14 @@
             android:name="com.unicamp.br.mo409.controller.DisciplinasActivity"
             android:label="@string/title_activity_disciplinas" >
         </activity>
+        <activity
+            android:name=".MainActivity2"
+            android:label="@string/title_activity_main_activity2" >
+        </activity>
+        <activity
+            android:name="com.unicamp.br.mo409.controller.MenuActivity"
+            android:label="@string/title_activity_menu" >
+        </activity>
     </application>
 
 </manifest>

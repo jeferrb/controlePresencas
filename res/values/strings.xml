@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Controle de Alunos</string>
 
     <string-array name="menu_lateral">
+        <item>Menu</item>
         <item>Disciplinas</item>
         <item>Check-out</item>
         <item>Alterar senha</item>
@@ -21,5 +23,7 @@
     <string name="title_activity_login">Login</string>
     <string name="title_activity_alterar_senha">Alterar Senha</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_main_activity2">MainActivity2</string>
+    <string name="title_activity_menu">MenuActivity</string>
 
 </resources>

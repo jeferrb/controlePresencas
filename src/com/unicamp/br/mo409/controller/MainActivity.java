@@ -103,18 +103,18 @@ public class MainActivity extends Activity {
 		
 		if (user.type.equals("Professor")){//(exception)
 			if (user.isInAula()) {
-				myTitles[1] = "Finalizar Aula";
+				myTitles[2] = "Finalizar Aula";
 			}else{
-				myTitles[1] = "Iniciar Aula";
+				myTitles[2] = "Iniciar Aula";
 			}
 		}else if (user.type.equals("Aluno")) {
 			if (user.isInAula()) {
-				myTitles[1] = "Check-out";
+				myTitles[2] = "Check-out";
 			}else{
-				myTitles[1] = "Check-in";
+				myTitles[2] = "Check-in";
 			}
 		}
-		myTitles[1]+=" em MO123";
+		myTitles[2]+=" em MO123";
 		return myTitles;
 	}
 	/*private String[] getMyTitles() {
@@ -190,11 +190,14 @@ public class MainActivity extends Activity {
 
 	private void selectItem(int position) {
 		switch (position) {
-		case 0: // Disciplinas
-			getDisciplinas();
+		case 0://Memu
+			callNewFragment(position, new MenuFragment());
+			break;
+		case 1: // Disciplinas
+			//getDisciplinas();
 			callNewFragment(position, new DisciplinasFragment());
 			break;
-		case 1: // check-in/out
+		case 2: // check-in/out
 			if (user.isInAula()) {
 				//TODO: Chamar escolher disciplinas ou desativar botão.
 				doCheckOut();
@@ -202,16 +205,16 @@ public class MainActivity extends Activity {
 				doCheckIn(1);
 			}
 			break;
-		case 2:
+		case 3:
 			user.alterarSenha(position, this);
 			break;
-		case 3:
+		case 4:
 			askForLogout();
 			break;
 		}
 	}
 
-	private void askForLogout() {
+	public void askForLogout() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage("Tem certeza que desaja sair?").setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 		           @Override
@@ -300,9 +303,22 @@ public class MainActivity extends Activity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.activity_disciplinas, container, false);
-
+            View rootView = inflater.inflate(R.layout.activity_menu, container, false);
             getActivity().setTitle("Disciplinas");
+            return rootView;
+        }
+    }
+    public static class MenuFragment extends Fragment {
+        public MenuFragment() {
+            // Empty constructor required for fragment subclasses
+        	//TODO
+        }
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_menu, container, false);
+
+            getActivity().setTitle("Menu Principal");
             return rootView;
         }
     }
@@ -351,4 +367,20 @@ public class MainActivity extends Activity {
 	    askForLogout();
 	}
 	
+	/*----------------------menu----------------------*/
+	public void gotoMenu(View view){
+		selectItem(0);
+	}
+	public void gotoDisciplinas(View view){
+		selectItem(1);
+	}
+	public void gotoCheckin(View view){
+		selectItem(2);
+	}
+	public void gotoAlterarSenha(View view){
+		selectItem(3);
+	}
+	public void gotoLogout(View view){
+		selectItem(4);
+	}
 }

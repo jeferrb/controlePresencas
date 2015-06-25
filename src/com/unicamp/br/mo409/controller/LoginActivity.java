@@ -115,12 +115,10 @@ public class LoginActivity extends Activity{
 	
 	public void debugProf(View view){
 		callNewIntent(view, "Professor", "0", "eli");//professor
-		
 	}
 
 	public void debugAlun(View view){
 		callNewIntent(view, "Aluno", "0", "jef");//student
-		
 	}
 
 }

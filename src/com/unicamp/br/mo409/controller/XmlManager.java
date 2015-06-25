@@ -50,7 +50,7 @@ public class XmlManager {
                  break;
                  case XmlPullParser.END_TAG:
                 	 if (name.equals("sucess")){
-                		 if(!text.equals("true")){
+                		 if(text.equals("false")){
                 			 retorno [0] = "Usuário já conectado";
                 			 return retorno;
                 		 }
